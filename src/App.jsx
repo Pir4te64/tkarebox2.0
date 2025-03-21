@@ -7,6 +7,7 @@ import Config from "./pages/Config";
 import Perfil from "./pages/PerfilDependiente";
 import AdministracionPage from "./pages/Administracion";
 import SubirPage from "./pages/Subir";
+import FichaMedicaPage from "./pages/FichaMedica";
 import PublicRoute from "./utils/PublicRoute";
 import PrivateRoute from "./utils/PrivateRoute";
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/perfilDependiente" element={<Perfil />} />
           <Route path="/administracion" element={<AdministracionPage />} />
           <Route path="/subir" element={<SubirPage />} />
+          <Route path="/fichaMedica" element={<FichaMedicaPage />} />
         </Route>
       </Routes>
     </>

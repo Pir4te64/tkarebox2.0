@@ -13,7 +13,7 @@ export const API = {
   UPDATE_USER: `${BASE_URL}/user/update`,
   DATA_REGISTER: `${BASE_URL}/user/data/register`,
   DATA_REGISTER_UPDATE: `${BASE_URL}/user/data/update`,
-  DATA_REGISTER_GET: `${BASE_URL}/user/data/`,
+  DATA_REGISTER_GET: `${BASE_URL}/user/data`,
   DATA_REGISTER_DELETE: `${BASE_URL}/user/data/chronicDiseases/`,
   PACIENTE_CONTACTO_POST: `${BASE_URL}/patient-contact`,
   PACIENTE_CONTACTO_PUT: `${BASE_URL}/patient-contact`,

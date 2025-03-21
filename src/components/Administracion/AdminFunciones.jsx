@@ -1,5 +1,6 @@
 // src/components/TarjetaAdmin.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaUser, FaIdCard } from "react-icons/fa";
 import ModalActualizarNombre from "./Modales/ModalActualizarNombre";
 import ModalActualizarPassword from "./Modales/ModalActualizarPassword";
@@ -15,6 +16,9 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
 
   // Controla la apertura/cierre del modal para actualizar password
   const [showModalPass, setShowModalPass] = useState(false);
+
+  // Hook de navegación de React Router
+  const navigate = useNavigate();
 
   return (
     <div className="bg-azul text-white rounded-2xl shadow-xl w-full max-w-sm p-6 mb-4">
@@ -41,9 +45,17 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
       {/* Botón para actualizar password */}
       <button
         onClick={() => setShowModalPass(true)}
-        className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+        className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
       >
         Actualizar Password
+      </button>
+
+      {/* Botón para “Ficha” - Redirecciona a /ficha-medica */}
+      <button
+        onClick={() => navigate("/fichaMedica")}
+        className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+      >
+        Ficha Medica
       </button>
 
       {/* Modal para actualizar nombre */}
