@@ -14,9 +14,12 @@ const Home = () => {
           >
             Menú de Administración
           </Link>
-          <button className="bg-yellow-500 text-white py-4 px-2 rounded-lg font-semibold">
+          <Link
+            to="/fichaMedica"
+            className="bg-yellow-500 text-white py-4 px-2 rounded-lg font-semibold"
+          >
             Perfil de Identificación Médica
-          </button>
+          </Link>
           <button className="bg-indigo-700 text-white py-4 px-2 rounded-lg font-semibold">
             Exámenes de Laboratorio
           </button>

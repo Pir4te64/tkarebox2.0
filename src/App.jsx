@@ -8,6 +8,7 @@ import Perfil from "./pages/PerfilDependiente";
 import AdministracionPage from "./pages/Administracion";
 import SubirPage from "./pages/Subir";
 import FichaMedicaPage from "./pages/FichaMedica";
+import DetallesPage from "./pages/Detalles";
 import PublicRoute from "./utils/PublicRoute";
 import PrivateRoute from "./utils/PrivateRoute";
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/administracion" element={<AdministracionPage />} />
           <Route path="/subir" element={<SubirPage />} />
           <Route path="/fichaMedica" element={<FichaMedicaPage />} />
+          <Route path="/detalles" element={<DetallesPage />} />
         </Route>
       </Routes>
     </>

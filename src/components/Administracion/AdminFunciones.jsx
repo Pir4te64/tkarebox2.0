@@ -1,23 +1,12 @@
-// src/components/TarjetaAdmin.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaIdCard } from "react-icons/fa";
 import ModalActualizarNombre from "./Modales/ModalActualizarNombre";
 import ModalActualizarPassword from "./Modales/ModalActualizarPassword";
 
-/**
- * Muestra la tarjeta con el nombre y documento de un perfil.
- * @param {{ nombre: string; documento: string }} profile - Datos del perfil
- * @param {function} reloadProfile - Función para recargar el perfil tras actualizar
- */
 const TarjetaAdmin = ({ profile, reloadProfile }) => {
-  // Controla la apertura/cierre del modal para actualizar nombre
   const [showModalName, setShowModalName] = useState(false);
-
-  // Controla la apertura/cierre del modal para actualizar password
   const [showModalPass, setShowModalPass] = useState(false);
-
-  // Hook de navegación de React Router
   const navigate = useNavigate();
 
   return (
@@ -34,29 +23,40 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
         <span className="font-semibold text-lg">{profile.documento}</span>
       </div>
 
-      {/* Botón para actualizar nombre */}
-      <button
-        onClick={() => setShowModalName(true)}
-        className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
-      >
-        Actualizar Nombre
-      </button>
+      {/* Agrupar botones en un details */}
+      <details className="bg-white text-azul rounded-lg p-3 mb-2">
+        <summary className="cursor-pointer font-bold text-center mb-2">
+          Funciones
+        </summary>
 
-      {/* Botón para actualizar password */}
-      <button
-        onClick={() => setShowModalPass(true)}
-        className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
-      >
-        Actualizar Password
-      </button>
+        <button
+          onClick={() => setShowModalName(true)}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
+        >
+          Actualizar Nombre
+        </button>
 
-      {/* Botón para “Ficha” - Redirecciona a /ficha-medica */}
-      <button
-        onClick={() => navigate("/fichaMedica")}
-        className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
-      >
-        Ficha Medica
-      </button>
+        <button
+          onClick={() => setShowModalPass(true)}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
+        >
+          Actualizar Password
+        </button>
+
+        <button
+          onClick={() => navigate("/fichaMedica")}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
+        >
+          Ficha Medica
+        </button>
+
+        <button
+          onClick={() => navigate("/detalles", { state: profile })}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+        >
+          Detalles
+        </button>
+      </details>
 
       {/* Modal para actualizar nombre */}
       <ModalActualizarNombre

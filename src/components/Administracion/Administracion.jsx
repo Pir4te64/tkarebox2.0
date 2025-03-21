@@ -34,7 +34,7 @@ const Administracion = () => {
 
   // Render final
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center ">
       {/* Tarjeta superior con nombre y documento */}
       <TarjetaAdmin profile={profile} reloadProfile={fetchProfile} />
 
