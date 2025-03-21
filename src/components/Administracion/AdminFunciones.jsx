@@ -10,7 +10,7 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-azul text-white rounded-2xl shadow-xl w-full max-w-sm p-6 mb-4">
+    <div className="bg-black text-white rounded-b-lg shadow-xl w-full p-6 mb-4">
       {/* Fila para nombre */}
       <div className="flex items-center gap-2 mb-2">
         <FaUser size={20} />
@@ -52,9 +52,17 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
 
         <button
           onClick={() => navigate("/detalles", { state: profile })}
-          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
         >
           Detalles
+        </button>
+
+        {/* Nuevo botón para ir a Contactos */}
+        <button
+          onClick={() => navigate("/contactos", { state: profile })}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+        >
+          Contactos
         </button>
       </details>
 

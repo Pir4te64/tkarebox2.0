@@ -10,20 +10,20 @@ const Home = () => {
         <div className="grid grid-cols-2 gap-4 w-full max-w-md">
           <Link
             to="/administracion"
-            className="bg-black text-white py-4 px-2 rounded-lg font-semibold"
+            className="bg-black text-center text-white py-4 px-2 rounded-lg font-semibold"
           >
             Menú de Administración
           </Link>
           <Link
             to="/fichaMedica"
-            className="bg-yellow-500 text-white py-4 px-2 rounded-lg font-semibold"
+            className="bg-yellow-500 text-white text-center py-4 px-2 rounded-lg font-semibold"
           >
             Perfil de Identificación Médica
           </Link>
           <button className="bg-indigo-700 text-white py-4 px-2 rounded-lg font-semibold">
             Exámenes de Laboratorio
           </button>
-          <button className="bg-yellow-400 text-black py-4 px-2 rounded-lg font-semibold">
+          <button className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold">
             Examen de Imagen
           </button>
           <button className="bg-green-600 text-white py-4 px-2 rounded-lg font-semibold">

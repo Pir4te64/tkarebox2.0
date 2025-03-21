@@ -8,7 +8,7 @@ import { FichaActualizadaPUT } from "./FichaActualizadaPUT"; // Asegúrate de la
 import { profileAdminGET } from "../PerfilAdminGET";
 import { ObtenerFichaGET } from "./ObtenerFichaGET";
 import { formatFecha, transformFichaData } from "./TransformarFichaData";
-
+import Header from "../../Header";
 const FichaMedica = () => {
   // Extraemos estados y setters del store
   const {
@@ -164,122 +164,125 @@ const FichaMedica = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-3 font-sans border border-gray-300 rounded-lg overflow-y-auto"
-    >
-      <details className="mb-4 bg-azul p-2 rounded">
-        <summary className="cursor-pointer font-bold text-lg mb-2 bg-azul text-white p-2 rounded">
-          Información Personal
-        </summary>
-
-        {/* Fecha de Nacimiento */}
-        <div className="mb-4">
-          <CustomInput
-            label="Fecha de Nacimiento"
-            type="date"
-            placeholder="Selecciona tu fecha de nacimiento"
-            value={fechaNac}
-            onChange={(e) => setFechaNac(e.target.value)}
-          />
-          <p className="mt-2 text-white flex justify-center">
-            {fechaNac
-              ? `Fecha seleccionada: ${formatFecha(fechaNac)}`
-              : "No se ha seleccionado fecha"}
-          </p>
-        </div>
-
-        {/* Datos generales */}
-        <div className="p-4 border border-gray-300 rounded">
-          <h3 className="mt-0 font-bold text-lg mb-2 text-white">Datos</h3>
-
-          {/* Peso */}
-          <CustomInput
-            label="Peso"
-            type="number"
-            placeholder="Ingrese su peso en kg"
-            value={peso}
-            onChange={(e) => setPeso(e.target.value)}
-          />
-
-          {/* Altura */}
-          <CustomInput
-            label="Altura"
-            type="number"
-            placeholder="Ingrese su altura en cm"
-            value={altura}
-            onChange={(e) => setAltura(e.target.value)}
-          />
-
-          {/* Tipo de Sangre */}
-          <div className="mb-4">
-            <label className="block mb-2 font-bold text-white">
-              Tipo de Sangre
-            </label>
-            <select
-              value={tipoSangre}
-              onChange={(e) => setTipoSangre(e.target.value)}
-              className="p-2 w-full border border-gray-300 rounded"
-            >
-              <option value="">Selecciona tu tipo de sangre</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-            </select>
-          </div>
-        </div>
-      </details>
-
-      {/* Sección: Alergias a Medicamentos */}
-      <AllergyInputSection
-        title="Agregar Alergia a Medicamentos"
-        inputPlaceholder="Ej 'Penicilina'"
-        newAllergyValue={newMedicationAllergy}
-        onNewAllergyChange={(e) => setNewMedicationAllergy(e.target.value)}
-        onAddAllergy={(e) => {
-          e.preventDefault();
-          if (newMedicationAllergy.trim() !== "") {
-            addMedicationAllergy(newMedicationAllergy.trim());
-            setNewMedicationAllergy("");
-          }
-        }}
-        allergies={medicationAllergies}
-        onRemoveAllergy={removeMedicationAllergy}
-      />
-
-      {/* Sección: Otras Alergias */}
-      <AllergyInputSection
-        title="Agregar Otras Alergias"
-        inputPlaceholder="Otras alergias"
-        newAllergyValue={newOtherAllergy}
-        onNewAllergyChange={(e) => setNewOtherAllergy(e.target.value)}
-        onAddAllergy={(e) => {
-          e.preventDefault();
-          if (newOtherAllergy.trim() !== "") {
-            addOtherAllergy(newOtherAllergy.trim());
-            setNewOtherAllergy("");
-          }
-        }}
-        allergies={otherAllergies}
-        onRemoveAllergy={removeOtherAllergy}
-      />
-
-      {/* Sección: Enfermedad Crónica */}
-      <ChronicDiseaseSection />
-
-      {/* Botón para enviar el formulario */}
-      <button
-        type="submit"
-        className="py-3 px-6 bg-azul text-white rounded cursor-pointer mt-4 w-full"
+    <div>
+      <Header title={"Ficha Medica"} />
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto p-3 mt-20 font-sans border border-gray-300 rounded-lg overflow-y-auto"
       >
-        {isFichaExist ? "Actualizar Información" : "Guardar Información"}
-      </button>
-    </form>
+        <details className="mb-4 bg-azul p-2 rounded">
+          <summary className="cursor-pointer font-bold text-lg mb-2 bg-azul text-white p-2 rounded">
+            Información Personal
+          </summary>
+
+          {/* Fecha de Nacimiento */}
+          <div className="mb-4">
+            <CustomInput
+              label="Fecha de Nacimiento"
+              type="date"
+              placeholder="Selecciona tu fecha de nacimiento"
+              value={fechaNac}
+              onChange={(e) => setFechaNac(e.target.value)}
+            />
+            <p className="mt-2 text-white flex justify-center">
+              {fechaNac
+                ? `Fecha seleccionada: ${formatFecha(fechaNac)}`
+                : "No se ha seleccionado fecha"}
+            </p>
+          </div>
+
+          {/* Datos generales */}
+          <div className="p-4 border border-gray-300 rounded">
+            <h3 className="mt-0 font-bold text-lg mb-2 text-white">Datos</h3>
+
+            {/* Peso */}
+            <CustomInput
+              label="Peso"
+              type="number"
+              placeholder="Ingrese su peso en kg"
+              value={peso}
+              onChange={(e) => setPeso(e.target.value)}
+            />
+
+            {/* Altura */}
+            <CustomInput
+              label="Altura"
+              type="number"
+              placeholder="Ingrese su altura en cm"
+              value={altura}
+              onChange={(e) => setAltura(e.target.value)}
+            />
+
+            {/* Tipo de Sangre */}
+            <div className="mb-4">
+              <label className="block mb-2 font-bold text-white">
+                Tipo de Sangre
+              </label>
+              <select
+                value={tipoSangre}
+                onChange={(e) => setTipoSangre(e.target.value)}
+                className="p-2 w-full border border-gray-300 rounded"
+              >
+                <option value="">Selecciona tu tipo de sangre</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        {/* Sección: Alergias a Medicamentos */}
+        <AllergyInputSection
+          title="Agregar Alergia a Medicamentos"
+          inputPlaceholder="Ej 'Penicilina'"
+          newAllergyValue={newMedicationAllergy}
+          onNewAllergyChange={(e) => setNewMedicationAllergy(e.target.value)}
+          onAddAllergy={(e) => {
+            e.preventDefault();
+            if (newMedicationAllergy.trim() !== "") {
+              addMedicationAllergy(newMedicationAllergy.trim());
+              setNewMedicationAllergy("");
+            }
+          }}
+          allergies={medicationAllergies}
+          onRemoveAllergy={removeMedicationAllergy}
+        />
+
+        {/* Sección: Otras Alergias */}
+        <AllergyInputSection
+          title="Agregar Otras Alergias"
+          inputPlaceholder="Otras alergias"
+          newAllergyValue={newOtherAllergy}
+          onNewAllergyChange={(e) => setNewOtherAllergy(e.target.value)}
+          onAddAllergy={(e) => {
+            e.preventDefault();
+            if (newOtherAllergy.trim() !== "") {
+              addOtherAllergy(newOtherAllergy.trim());
+              setNewOtherAllergy("");
+            }
+          }}
+          allergies={otherAllergies}
+          onRemoveAllergy={removeOtherAllergy}
+        />
+
+        {/* Sección: Enfermedad Crónica */}
+        <ChronicDiseaseSection />
+
+        {/* Botón para enviar el formulario */}
+        <button
+          type="submit"
+          className="py-3 px-6 bg-azul text-white rounded cursor-pointer mt-4 w-full"
+        >
+          {isFichaExist ? "Actualizar Información" : "Guardar Información"}
+        </button>
+      </form>
+    </div>
   );
 };
 
