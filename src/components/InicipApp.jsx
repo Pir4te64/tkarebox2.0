@@ -4,8 +4,8 @@ import medicalImg from "../assets/images/medical.png";
 import { Link } from "react-router-dom";
 const InicioApp = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4">
-      <div className="bg-azul rounded-3xl shadow-xl p-8 flex flex-col items-center max-w-lg w-full">
+    <div className="h-screen bg-gray-100 flex flex-col  items-center ">
+      <div className="bg-azul h-[80vh] rounded-b-3xl shadow-xl p-8 flex flex-col justify-center items-center max-w-lg w-full">
         <img
           src={medicalImg}
           alt="Ilustración Bienvenida"
@@ -20,14 +20,14 @@ const InicioApp = () => {
       <div className="mt-8 flex gap-4">
         <Link
           to="/login"
-          className="flex items-center gap-2 bg-azul text-white px-6 py-2 rounded-lg shadow-lg hover:bg-azul-700/80 transition duration-300"
+          className="flex items-center gap-2 bg-azul text-white px-6 py-3 rounded-lg shadow-lg hover:bg-azul-700/80 transition duration-300"
         >
           <FaSignInAlt /> Iniciar Sesión
         </Link>
 
         <Link
           to="/register"
-          className="flex items-center gap-2 bg-azul text-white px-6 py-2 rounded-lg shadow-lg hover:bg-azul-700/80 transition duration-300"
+          className="flex items-center gap-2 bg-azul text-white px-6 py-3 rounded-lg shadow-lg hover:bg-azul-700/80 transition duration-300"
         >
           <FaUserPlus /> Registrarse
         </Link>

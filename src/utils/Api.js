@@ -26,5 +26,5 @@ export const API = {
   HISTORAL_CLINICO_DELETE: `${BASE_URL}/medical-histories`,
   FILES_UPLOAD: `${BASE_URL}/files/upload`,
   CHATGPT: `${BASE_URL}/api/openai/analyze`,
-  CHATGPT_CONSULTA: `${BASE_URL}/api/openai/`,
+  CHATGPT_CONSULTA: `${BASE_URL}/api/openai`,
 };

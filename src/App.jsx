@@ -12,6 +12,7 @@ import DetallesPage from "./pages/Detalles";
 import ContactosPage from "./pages/Contactos";
 import PublicRoute from "./utils/PublicRoute";
 import PrivateRoute from "./utils/PrivateRoute";
+import ExamenesLaboratorioPage from "./pages/ExamenesLaboratorio";
 function App() {
   return (
     <>
@@ -30,6 +31,10 @@ function App() {
           <Route path="/fichaMedica" element={<FichaMedicaPage />} />
           <Route path="/detalles" element={<DetallesPage />} />
           <Route path="/contactos" element={<ContactosPage />} />
+          <Route
+            path="/examenesLaboratorio"
+            element={<ExamenesLaboratorioPage />}
+          />
         </Route>
       </Routes>
     </>

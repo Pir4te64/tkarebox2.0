@@ -1,9 +1,53 @@
-// Home.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout";
 import { Link } from "react-router-dom";
+import { profileAdminGET } from "../Administracion/PerfilAdminGET";
+import { ObtenerFichaGET } from "../Administracion/FichaMedica/ObtenerFichaGET";
 
 const Home = () => {
+  const [profileId, setProfileId] = useState(null);
+  const [ficha, setFicha] = useState(null); // Nuevo estado para la ficha
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 1) Obtener el perfil
+        const data = await profileAdminGET();
+        console.log("Perfil recibido:", data);
+
+        if (data?.id) {
+          setProfileId(data.id);
+
+          // 2) Llamar a ObtenerFichaGET con el id
+          const fichaData = await ObtenerFichaGET(data.id);
+          console.log("Ficha obtenida:", fichaData);
+          setFicha(fichaData.body.userDataId); // Guardamos la ficha en el estado
+        } else {
+          console.warn("El perfil no tiene un id válido");
+        }
+      } catch (err) {
+        console.error("Error al obtener el perfil o la ficha:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-lg font-semibold">Cargando perfil y ficha...</p>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="bg-azul h-screen rounded-b-3xl shadow-xl p-8 flex flex-col items-center justify-center">
@@ -20,9 +64,14 @@ const Home = () => {
           >
             Perfil de Identificación Médica
           </Link>
-          <button className="bg-indigo-700 text-white py-4 px-2 rounded-lg font-semibold">
+          {/* Pasar la ficha e id a la pantalla de exámenes */}
+          <Link
+            to="/examenesLaboratorio"
+            state={{ id: profileId, ficha }}
+            className="bg-indigo-700 text-white py-4 px-2 rounded-lg font-semibold text-center"
+          >
             Exámenes de Laboratorio
-          </button>
+          </Link>
           <button className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold">
             Examen de Imagen
           </button>
@@ -38,11 +87,19 @@ const Home = () => {
           </button>
           <Link
             to="/contactos"
+            state={{ id: profileId }}
             className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold text-center"
           >
             Datos de Emergencia
           </Link>
         </div>
+
+        {error && <p className="text-center text-red-500 mt-4">{error}</p>}
+        {!error && !profileId && (
+          <p className="text-center text-yellow-300 mt-4">
+            El perfil no contiene un ID válido.
+          </p>
+        )}
       </div>
     </Layout>
   );
