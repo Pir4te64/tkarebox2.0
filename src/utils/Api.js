@@ -21,7 +21,7 @@ export const API = {
   PACIENTE_CONTACTO_GET: `${BASE_URL}/patient-contact/`,
   PACIENTE_CONTACTO_GET_ALL: `${BASE_URL}/patient-contact/all`,
   HISTORAL_CLINICO_POST: `${BASE_URL}/medical-histories`,
-  HISTORAL_CLINICO_GET_BY_USER: `${BASE_URL}/medical-histories/all/`,
+  HISTORAL_CLINICO_GET_BY_USER: `${BASE_URL}/medical-histories/all`,
   HISTORAL_CLINICO_PUT: `${BASE_URL}/medical-histories`,
   HISTORAL_CLINICO_DELETE: `${BASE_URL}/medical-histories`,
   FILES_UPLOAD: `${BASE_URL}/files/upload`,

@@ -15,14 +15,12 @@ const Home = () => {
       try {
         // 1) Obtener el perfil
         const data = await profileAdminGET();
-        console.log("Perfil recibido:", data);
 
         if (data?.id) {
           setProfileId(data.id);
 
           // 2) Llamar a ObtenerFichaGET con el id
           const fichaData = await ObtenerFichaGET(data.id);
-          console.log("Ficha obtenida:", fichaData);
           setFicha(fichaData.body.userDataId); // Guardamos la ficha en el estado
         } else {
           console.warn("El perfil no tiene un id válido");
@@ -42,7 +40,7 @@ const Home = () => {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen">
-          <p className="text-lg font-semibold">Cargando perfil y ficha...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-azul"></div>
         </div>
       </Layout>
     );
@@ -75,9 +73,12 @@ const Home = () => {
           <button className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold">
             Examen de Imagen
           </button>
-          <button className="bg-green-600 text-white py-4 px-2 rounded-lg font-semibold">
+          <Link
+            to="/examenesReceta"
+            className="bg-green-600 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center"
+          >
             Recetas
-          </button>
+          </Link>
           <button className="bg-purple-600 text-white py-4 px-2 rounded-lg font-semibold">
             Historial de Consultas Médicas
           </button>
@@ -88,7 +89,7 @@ const Home = () => {
           <Link
             to="/contactos"
             state={{ id: profileId }}
-            className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold text-center"
+            className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center"
           >
             Datos de Emergencia
           </Link>

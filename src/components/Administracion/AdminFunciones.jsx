@@ -40,7 +40,7 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
           onClick={() => setShowModalPass(true)}
           className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
         >
-          Actualizar Password
+          Actualizar Contraseña
         </button>
 
         <button
@@ -63,6 +63,12 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
           className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
         >
           Contactos
+        </button>
+        <button
+          onClick={() => navigate("/historialMedico", { state: profile })}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+        >
+          Historial Médico
         </button>
       </details>
 

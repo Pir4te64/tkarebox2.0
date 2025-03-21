@@ -58,7 +58,7 @@ const ExamenesLab = () => {
 
   return (
     <>
-      <div className="max-w-md mx-auto p-4 bg-white shadow rounded mt-4">
+      <div className="max-w-md mx-auto p-4 mt-20 bg-white shadow rounded ">
         <h1 className="text-2xl text-center mb-4">Exámenes de Laboratorio</h1>
         <div className="space-y-4">
           <div>

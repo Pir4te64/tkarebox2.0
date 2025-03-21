@@ -13,6 +13,8 @@ import ContactosPage from "./pages/Contactos";
 import PublicRoute from "./utils/PublicRoute";
 import PrivateRoute from "./utils/PrivateRoute";
 import ExamenesLaboratorioPage from "./pages/ExamenesLaboratorio";
+import ExamenesRecetaPage from "./pages/ExamenesReceta";
+import HistorialMedicoPage from "./pages/HistorialMedico";
 function App() {
   return (
     <>
@@ -35,6 +37,8 @@ function App() {
             path="/examenesLaboratorio"
             element={<ExamenesLaboratorioPage />}
           />
+          <Route path="/examenesReceta" element={<ExamenesRecetaPage />} />
+          <Route path="/historialMedico" element={<HistorialMedicoPage />} />
         </Route>
       </Routes>
     </>
