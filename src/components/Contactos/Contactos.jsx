@@ -66,8 +66,7 @@ const Contactos = () => {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Contactos de {profile.nombre}</h1>
-      <details className="bg-azul text-white shadow-lg rounded-lg p-3 mb-8">
+      <details className="bg-azul text-white shadow-lg rounded-lg p-3 mb-8 mt-20">
         <summary className="cursor-pointer font-bold text-lg text-center">
           Crear/Editar Contactos
         </summary>

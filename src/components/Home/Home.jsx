@@ -36,9 +36,12 @@ const Home = () => {
             Próximo Control
             <span className="block text-xs">(Actualmente no disponible)</span>
           </button>
-          <button className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold">
+          <Link
+            to="/contactos"
+            className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold text-center"
+          >
             Datos de Emergencia
-          </button>
+          </Link>
         </div>
       </div>
     </Layout>
