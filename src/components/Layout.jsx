@@ -4,6 +4,9 @@ import { FaHome, FaUser, FaBell, FaCog, FaUpload } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Layout = ({ children }) => {
+  // Obtenemos el rol desde localStorage
+  const role = localStorage.getItem("role");
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       <div className="flex-grow">{children}</div>
@@ -14,18 +17,25 @@ const Layout = ({ children }) => {
           <FaHome size={20} />
           <span className="text-xs">Inicio</span>
         </Link>
-        <Link to="/perfilDependiente" className="flex flex-col items-center">
-          <FaUser size={20} />
-          <span className="text-xs">Perfil</span>
-        </Link>
+
+        {/* Solo muestra la opción de perfil si role NO es 'D' */}
+        {role !== "D" && (
+          <Link to="/perfilDependiente" className="flex flex-col items-center">
+            <FaUser size={20} />
+            <span className="text-xs">Perfil</span>
+          </Link>
+        )}
+
         <Link to="/administracion" className="flex flex-col items-center">
           <FaBell size={20} />
           <span className="text-xs">Admin</span>
         </Link>
+
         <Link to="/subir" className="flex flex-col items-center">
           <FaUpload size={20} />
           <span className="text-xs">Subir</span>
         </Link>
+
         <Link to="/config" className="flex flex-col items-center">
           <FaCog size={20} />
           <span className="text-xs">Config</span>

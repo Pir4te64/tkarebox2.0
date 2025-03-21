@@ -1,15 +1,19 @@
 // Home.jsx
 import React from "react";
 import Layout from "../Layout";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <Layout>
-      <div className="bg-azul rounded-b-3xl shadow-xl p-8 flex flex-col items-center">
+      <div className="bg-azul h-screen rounded-b-3xl shadow-xl p-8 flex flex-col items-center justify-center">
         <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-          <button className="bg-black text-white py-4 px-2 rounded-lg font-semibold">
+          <Link
+            to="/administracion"
+            className="bg-black text-white py-4 px-2 rounded-lg font-semibold"
+          >
             Menú de Administración
-          </button>
+          </Link>
           <button className="bg-yellow-500 text-white py-4 px-2 rounded-lg font-semibold">
             Perfil de Identificación Médica
           </button>
