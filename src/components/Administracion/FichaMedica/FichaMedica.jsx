@@ -7,62 +7,8 @@ import { CrearFichaPOST } from "./CrearFichaPOST";
 import { FichaActualizadaPUT } from "./FichaActualizadaPUT"; // Asegúrate de la ruta correcta
 import { profileAdminGET } from "../PerfilAdminGET";
 import { ObtenerFichaGET } from "./ObtenerFichaGET";
+import { formatFecha, transformFichaData } from "./TransformarFichaData";
 
-// Función para transformar los datos recibidos en el formato esperado por el store
-const transformFichaData = (body) => {
-  // Transformar la fecha
-  let fechaNacTransformed = "";
-  if (Array.isArray(body.birthDate) && body.birthDate.length >= 3) {
-    const [year, month, day] = body.birthDate;
-    fechaNacTransformed = `${year}-${month.toString().padStart(2, "0")}-${day
-      .toString()
-      .padStart(2, "0")}`;
-  } else if (typeof body.birthDate === "string") {
-    fechaNacTransformed = body.birthDate;
-  }
-
-  // Transformar las alergias: extraer el campo "allergy"
-  const medicationAllergiesTransformed = Array.isArray(
-    body.medicationAllergyUsers
-  )
-    ? body.medicationAllergyUsers.map((item) => item.allergy)
-    : [];
-  const otherAllergiesTransformed = Array.isArray(body.otherAllergiesUsers)
-    ? body.otherAllergiesUsers.map((item) => item.allergy)
-    : [];
-
-  // Transformar las enfermedades crónicas
-  const chronicDiseasesTransformed = Array.isArray(body.chronicDiseasesUsers)
-    ? body.chronicDiseasesUsers.map((item) => ({
-        enfermedad: item.disease,
-        doctorEmail: item.doctorEmail,
-        centroMedico: item.medicalCenter,
-        medicamento:
-          item.medicalTreatmentUser && item.medicalTreatmentUser.length > 0
-            ? item.medicalTreatmentUser[0].medication
-            : "",
-        dosis:
-          item.medicalTreatmentUser && item.medicalTreatmentUser.length > 0
-            ? item.medicalTreatmentUser[0].dosage
-            : "",
-      }))
-    : [];
-
-  return {
-    fechaNac: fechaNacTransformed,
-    peso: body.weight || "",
-    altura: body.height || "",
-    tipoSangre: body.bloodType || "",
-    medicationAllergies: medicationAllergiesTransformed,
-    otherAllergies: otherAllergiesTransformed,
-    chronicDiseases: chronicDiseasesTransformed,
-  };
-};
-function formatFecha(yyyy_mm_dd) {
-  if (!yyyy_mm_dd) return "";
-  const [year, month, day] = yyyy_mm_dd.split("-");
-  return `${day}/${month}/${year}`;
-}
 const FichaMedica = () => {
   // Extraemos estados y setters del store
   const {
@@ -111,7 +57,6 @@ const FichaMedica = () => {
       const fetchFicha = async () => {
         try {
           const fichaData = await ObtenerFichaGET(afiliado.id);
-          console.log("Ficha GET:", fichaData);
           if (fichaData?.body) {
             const transformedData = transformFichaData(fichaData.body);
             setFichaMedicaData(transformedData);
@@ -144,6 +89,7 @@ const FichaMedica = () => {
       return undefined;
     }
 
+    // Ajustamos la fecha compensando el timezone offset para evitar restar un día
     const dateObj = new Date(fechaNac);
     dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
     const formattedDate = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1)
@@ -207,7 +153,6 @@ const FichaMedica = () => {
     if (response) {
       try {
         const fichaData = await ObtenerFichaGET(afiliado.id);
-        console.log("Ficha actualizada GET:", fichaData);
         if (fichaData?.body) {
           const transformedData = transformFichaData(fichaData.body);
           setFichaMedicaData(transformedData);
@@ -221,86 +166,74 @@ const FichaMedica = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      style={{
-        maxWidth: "400px",
-        margin: "0 auto",
-        padding: "1rem",
-        fontFamily: "Arial, sans-serif",
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-      }}
+      className="max-w-md mx-auto p-3 font-sans border border-gray-300 rounded-lg overflow-y-auto"
     >
-      {/* Fecha de Nacimiento */}
-      <CustomInput
-        label="Fecha de Nacimiento"
-        type="date"
-        placeholder="Selecciona tu fecha de nacimiento"
-        value={fechaNac}
-        onChange={(e) => setFechaNac(e.target.value)}
-      />
-      <p style={{ marginTop: "0.5rem" }}>
-        {fechaNac
-          ? `Fecha seleccionada: ${formatFecha(fechaNac)}`
-          : "No se ha seleccionado fecha"}
-      </p>
+      <details className="mb-4 bg-azul p-2 rounded">
+        <summary className="cursor-pointer font-bold text-lg mb-2 bg-azul text-white p-2 rounded">
+          Información Personal
+        </summary>
 
-      {/* Datos generales */}
-      <div
-        style={{
-          padding: "1rem",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          marginBottom: "1rem",
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>Datos</h3>
-
-        {/* Peso */}
-        <CustomInput
-          label="Peso"
-          type="number"
-          placeholder="Ingrese su peso en kg"
-          value={peso}
-          onChange={(e) => setPeso(e.target.value)}
-        />
-
-        {/* Altura */}
-        <CustomInput
-          label="Altura"
-          type="number"
-          placeholder="Ingrese su altura en cm"
-          value={altura}
-          onChange={(e) => setAltura(e.target.value)}
-        />
-
-        {/* Tipo de Sangre */}
-        <div style={{ marginBottom: "1rem" }}>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontWeight: "bold",
-            }}
-          >
-            Tipo de Sangre
-          </label>
-          <select
-            value={tipoSangre}
-            onChange={(e) => setTipoSangre(e.target.value)}
-            style={{ padding: "0.5rem", width: "100%" }}
-          >
-            <option value="">Selecciona tu tipo de sangre</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-          </select>
+        {/* Fecha de Nacimiento */}
+        <div className="mb-4">
+          <CustomInput
+            label="Fecha de Nacimiento"
+            type="date"
+            placeholder="Selecciona tu fecha de nacimiento"
+            value={fechaNac}
+            onChange={(e) => setFechaNac(e.target.value)}
+          />
+          <p className="mt-2 text-white flex justify-center">
+            {fechaNac
+              ? `Fecha seleccionada: ${formatFecha(fechaNac)}`
+              : "No se ha seleccionado fecha"}
+          </p>
         </div>
-      </div>
+
+        {/* Datos generales */}
+        <div className="p-4 border border-gray-300 rounded">
+          <h3 className="mt-0 font-bold text-lg mb-2 text-white">Datos</h3>
+
+          {/* Peso */}
+          <CustomInput
+            label="Peso"
+            type="number"
+            placeholder="Ingrese su peso en kg"
+            value={peso}
+            onChange={(e) => setPeso(e.target.value)}
+          />
+
+          {/* Altura */}
+          <CustomInput
+            label="Altura"
+            type="number"
+            placeholder="Ingrese su altura en cm"
+            value={altura}
+            onChange={(e) => setAltura(e.target.value)}
+          />
+
+          {/* Tipo de Sangre */}
+          <div className="mb-4">
+            <label className="block mb-2 font-bold text-white">
+              Tipo de Sangre
+            </label>
+            <select
+              value={tipoSangre}
+              onChange={(e) => setTipoSangre(e.target.value)}
+              className="p-2 w-full border border-gray-300 rounded"
+            >
+              <option value="">Selecciona tu tipo de sangre</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+        </div>
+      </details>
 
       {/* Sección: Alergias a Medicamentos */}
       <AllergyInputSection
@@ -342,15 +275,7 @@ const FichaMedica = () => {
       {/* Botón para enviar el formulario */}
       <button
         type="submit"
-        style={{
-          padding: "0.75rem 1.5rem",
-          backgroundColor: "#2563EB",
-          color: "#fff",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          marginTop: "1rem",
-        }}
+        className="py-3 px-6 bg-azul text-white rounded cursor-pointer mt-4 w-full"
       >
         {isFichaExist ? "Actualizar Información" : "Guardar Información"}
       </button>

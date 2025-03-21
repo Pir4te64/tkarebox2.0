@@ -24,7 +24,6 @@ export async function FichaActualizadaPUT(updatedData) {
       }
     );
 
-    console.log("Ficha actualizada:", response.data);
     alert("✅ Ficha actualizada correctamente.");
     return response.data;
   } catch (error) {

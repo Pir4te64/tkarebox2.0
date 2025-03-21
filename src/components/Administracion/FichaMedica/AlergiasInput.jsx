@@ -1,14 +1,5 @@
 import React from "react";
 
-const chipStyle = {
-  display: "inline-block",
-  background: "#eee",
-  borderRadius: "16px",
-  padding: "4px 8px",
-  marginRight: "8px",
-  marginBottom: "8px",
-};
-
 const AllergyInputSection = ({
   title,
   inputPlaceholder,
@@ -19,44 +10,44 @@ const AllergyInputSection = ({
   onRemoveAllergy,
 }) => {
   return (
-    <details style={{ marginBottom: "1rem" }}>
-      <summary
-        style={{
-          cursor: "pointer",
-          fontWeight: "bold",
-          marginBottom: "0.5rem",
-        }}
-      >
+    <details className="mb-4 bg-azul p-4 rounded">
+      <summary className="cursor-pointer font-bold mb-2 text-white">
         {title}
       </summary>
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+      <div className="flex gap-2 mb-2">
         <input
           type="text"
           placeholder={inputPlaceholder}
           value={newAllergyValue}
           onChange={onNewAllergyChange}
-          style={{ flex: 1, padding: "0.5rem" }}
+          className="flex-1 p-2 border border-gray-300 rounded"
         />
-        <button onClick={onAddAllergy} style={{ padding: "0.5rem" }}>
+        <button
+          onClick={onAddAllergy}
+          className="p-2 bg-blue-500 text-white rounded"
+        >
           +
         </button>
       </div>
-      <ul style={{ marginLeft: "1rem" }}>
+      <ul className="ml-4">
         {allergies.map((allergy, index) => (
-          <li key={index} style={{ marginBottom: "0.3rem" }}>
-            {allergy}{" "}
+          <li key={index} className="mb-1 text-white">
+            {allergy}
             <button
               onClick={() => onRemoveAllergy(allergy)}
-              style={{ color: "red", marginLeft: "0.5rem" }}
+              className="text-red-500 ml-2 text-xl"
             >
               -
             </button>
           </li>
         ))}
       </ul>
-      <div style={{ marginTop: "0.5rem" }}>
+      <div className="mt-2">
         {allergies.map((allergy, index) => (
-          <span key={index} style={chipStyle}>
+          <span
+            key={index}
+            className="inline-block bg-gray-200 rounded-full px-2 py-1 mr-2 mb-2 text-sm"
+          >
             {allergy}
           </span>
         ))}

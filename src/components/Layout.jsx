@@ -1,24 +1,22 @@
-// src/components/Layout.jsx
 import React from "react";
 import { FaHome, FaUser, FaBell, FaCog, FaUpload } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Layout = ({ children }) => {
-  // Obtenemos el rol desde localStorage
   const role = localStorage.getItem("role");
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
-      <div className="flex-grow">{children}</div>
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center">
+      {/* Contenedor centrado para el contenido principal */}
+      <div className="w-full max-w-md flex-grow mx-auto">{children}</div>
 
-      {/* Tabs inferiores */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg flex justify-between px-4 py-2 text-azul">
+      {/* Barra de navegación inferior (fija) */}
+      <div className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-md bg-white shadow-lg flex justify-between px-4 py-2 text-azul">
         <Link to="/home" className="flex flex-col items-center">
           <FaHome size={20} />
           <span className="text-xs">Inicio</span>
         </Link>
 
-        {/* Solo muestra la opción de perfil si role NO es 'D' */}
         {role !== "D" && (
           <Link to="/perfilDependiente" className="flex flex-col items-center">
             <FaUser size={20} />

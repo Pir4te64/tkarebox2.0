@@ -1,4 +1,3 @@
-// Archivo: ChronicDiseaseSection.jsx
 import React, { useState } from "react";
 import { useFichaMedicaStore } from "./useFichaMedicaStore";
 import CustomInput from "./CustomInput";
@@ -39,21 +38,11 @@ const ChronicDiseaseSection = () => {
 
   return (
     <div>
-      <details style={{ marginBottom: "1rem" }}>
-        <summary
-          style={{
-            cursor: "pointer",
-            fontWeight: "bold",
-            marginBottom: "0.5rem",
-            backgroundColor: "#4F46E5",
-            color: "#fff",
-            padding: "0.5rem",
-            borderRadius: "4px",
-          }}
-        >
+      <details className="mb-4 bg-blue-600 text-white p-4 rounded">
+        <summary className="cursor-pointer font-bold mb-2">
           Agregar Enfermedad Crónica
         </summary>
-        <div style={{ marginTop: "1rem" }}>
+        <div className="mt-4 space-y-3">
           <CustomInput
             label="Enfermedad"
             placeholder="Ej: Diabetes"
@@ -89,66 +78,54 @@ const ChronicDiseaseSection = () => {
 
           <button
             onClick={handleAddDisease}
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: "#10B981",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
+            className="py-2 px-4 bg-green-500 text-white rounded cursor-pointer"
           >
             Agregar Enfermedad +
           </button>
         </div>
       </details>
 
-      {/* Lista de enfermedades crónicas agregadas */}
-      {chronicDiseases.length > 0 && (
-        <div>
-          <h4>Enfermedades Crónicas Registradas</h4>
-          {chronicDiseases.map((disease, index) => (
-            <div
-              key={index}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                padding: "1rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <p>
-                <strong>Enfermedad:</strong> {disease.enfermedad}
-              </p>
-              <p>
-                <strong>Correo del Doctor:</strong> {disease.doctorEmail}
-              </p>
-              <p>
-                <strong>Centro Médico:</strong> {disease.centroMedico}
-              </p>
-              <p>
-                <strong>Medicamento:</strong> {disease.medicamento}
-              </p>
-              <p>
-                <strong>Dosis:</strong> {disease.dosis}
-              </p>
-              <button
-                onClick={() => removeChronicDisease(index)}
-                style={{
-                  padding: "0.3rem 0.6rem",
-                  backgroundColor: "red",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
+      <details className="mb-4 bg-gray-50 p-4 rounded">
+        <summary className="cursor-pointer font-bold text-lg mb-2">
+          Enfermedades Crónicas Registradas
+        </summary>
+        {chronicDiseases.length > 0 ? (
+          <div className="space-y-4">
+            {chronicDiseases.map((disease, index) => (
+              <div
+                key={index}
+                className="bg-white shadow-md border border-gray-200 rounded-lg p-4 flex flex-col gap-2"
               >
-                Eliminar
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                <div className="flex justify-between items-center">
+                  <h5 className="font-semibold text-gray-800">
+                    {disease.enfermedad}
+                  </h5>
+                  <button
+                    onClick={() => removeChronicDisease(index)}
+                    className="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+                <p className="text-sm text-gray-600">
+                  <strong>Correo del Doctor:</strong> {disease.doctorEmail}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Centro Médico:</strong> {disease.centroMedico}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Medicamento:</strong> {disease.medicamento}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Dosis:</strong> {disease.dosis}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-600">No hay enfermedades registradas.</p>
+        )}
+      </details>
     </div>
   );
 };

@@ -2,18 +2,14 @@ import React from "react";
 
 function CustomInput({ label, type = "text", value, onChange, placeholder }) {
   return (
-    <div style={{ marginBottom: "1rem" }}>
-      <label
-        style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}
-      >
-        {label}
-      </label>
+    <div className="mb-4">
+      <label className="block mb-2 font-bold text-white">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        style={{ padding: "0.5rem", width: "100%" }}
+        className="p-2 w-full text-black border border-gray-300 rounded"
       />
     </div>
   );
