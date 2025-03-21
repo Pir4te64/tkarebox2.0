@@ -68,7 +68,7 @@ const Contactos = () => {
     <div className="max-w-md mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Contactos de {profile.nombre}</h1>
       <details className="bg-azul text-white shadow-lg rounded-lg p-3 mb-8">
-        <summary className="cursor-pointer font-bold text-lg mb-4 text-center">
+        <summary className="cursor-pointer font-bold text-lg text-center">
           Crear/Editar Contactos
         </summary>
 
@@ -81,7 +81,7 @@ const Contactos = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Ingresa el nombre"
             />
           </div>
@@ -94,7 +94,7 @@ const Contactos = () => {
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Ingresa el teléfono"
             />
           </div>
@@ -105,7 +105,7 @@ const Contactos = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Ingresa el email"
             />
           </div>
@@ -117,7 +117,7 @@ const Contactos = () => {
             <textarea
               value={observation}
               onChange={(e) => setObservation(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Ingresa una observación"
             />
           </div>

@@ -25,7 +25,7 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
 
       {/* Agrupar botones en un details */}
       <details className="bg-white text-azul rounded-lg p-3 mb-2">
-        <summary className="cursor-pointer font-bold text-center mb-2">
+        <summary className="cursor-pointer font-bold text-center ">
           Funciones
         </summary>
 
