@@ -1,28 +1,36 @@
-// src/components/ModalActualizarNombre.jsx
+// src/components/ModalActualizarNombreAfiliado.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../../../utils/Api";
 
 /**
- * Modal para actualizar el nombre de un usuario.
+ * Modal para actualizar el nombre de un afiliado.
  *
  * @param {boolean} isOpen - Controla si el modal está abierto.
  * @param {function} onClose - Función para cerrar el modal.
- * @param {{name: string; document: string}} user - Datos actuales del usuario (opcional).
+ * @param {object} user - Puede ser {name, document} o {nombre, documento, ...}.
  * @param {function} reloadProfile - Función para recargar el perfil tras un update exitoso.
  */
-const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
+const ModalActualizarNombreAfiliado = ({
+  isOpen,
+  onClose,
+  user,
+  reloadProfile,
+}) => {
   // Estados para manejar la lógica del formulario y feedback
   const [newName, setNewName] = useState("");
   const [feedback, setFeedback] = useState(null); // { status: 'success'|'error', message: string }
-  console.log(user);
+
+  // Unifica los campos de nombre y documento, según el formato recibido
+  const userName = user?.name || user?.nombre || "";
+  const userDocument = user?.document || user?.documento || "";
   // Al abrir el modal, inicializa o limpia estados
   useEffect(() => {
     if (isOpen) {
-      setNewName(user?.name || "");
+      setNewName(userName);
       setFeedback(null);
     }
-  }, [isOpen, user]);
+  }, [isOpen, userName]);
 
   // Cierra modal y, si fue exitoso, recarga perfil
   const handleFeedbackClose = () => {
@@ -60,13 +68,13 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
         },
       };
 
-      // Nota: Ajusta API.UPDATE_USER según tu backend.
+      // Ajusta la URL y el body según tu backend
       const response = await axios.put(
-        API.UPDATE_USER,
+        API.UPDATE_USER, // Ejemplo: Ajusta a la ruta real de tu backend
         {
           name: newName.trim(),
-          document: user?.document,
-          pseudonym: user?.document,
+          document: userDocument,
+          pseudonym: userDocument,
         },
         config
       );
@@ -78,10 +86,10 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
       // Si todo va bien:
       setFeedback({
         status: "success",
-        message: "La información del usuario se actualizó correctamente.",
+        message: "La información del afiliado se actualizó correctamente.",
       });
     } catch (error) {
-      console.error("Error al actualizar usuario:", error);
+      console.error("Error al actualizar afiliado:", error);
       setFeedback({
         status: "error",
         message:
@@ -117,7 +125,7 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
           // Formulario para actualizar
           <>
             <h2 className="text-xl font-semibold mb-4 text-center">
-              Actualizar Datos del Usuario
+              Actualizar Nombre del Afiliado
             </h2>
             <label className="block mb-1 text-sm font-medium text-gray-700">
               Nombre Actual
@@ -126,7 +134,7 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
               type="text"
               readOnly
               className="w-full mb-3 border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700"
-              value={user?.name || ""}
+              value={userName}
             />
 
             <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -160,4 +168,4 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
   );
 };
 
-export default ModalActualizarNombre;
+export default ModalActualizarNombreAfiliado;

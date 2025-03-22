@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaUser, FaIdCard } from "react-icons/fa";
 import { profileAdminGET } from "./PerfilAdminGET"; // Tu archivo de servicio
 import TarjetaAdmin from "./AdminFunciones";
+import Afiliados from "./Afiliados";
 
 const Administracion = () => {
   const [profile, setProfile] = useState(null);
@@ -44,23 +45,7 @@ const Administracion = () => {
           Lista de Afiliados
         </h3>
 
-        {profile.afiliados && profile.afiliados.length > 0 ? (
-          <ul className="space-y-2">
-            {profile.afiliados.map((afil) => (
-              <li
-                key={afil.id}
-                className="flex items-center justify-between bg-gray-50 p-3 rounded shadow-sm"
-              >
-                <span className="font-medium">{afil.nombre}</span>
-                <span className="text-sm text-gray-600">
-                  DOC: {afil.documento}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-700">No hay afiliados registrados.</p>
-        )}
+        <Afiliados afiliados={profile.afiliados} reloadProfile={fetchProfile} />
       </div>
     </div>
   );

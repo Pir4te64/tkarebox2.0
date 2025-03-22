@@ -1,30 +1,32 @@
-// src/components/ModalActualizarNombre.jsx
+// src/components/ModalActualizarRol.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../../../utils/Api";
 
 /**
- * Modal para actualizar el nombre de un usuario.
+ * Modal para actualizar el rol de un usuario.
  *
  * @param {boolean} isOpen - Controla si el modal está abierto.
  * @param {function} onClose - Función para cerrar el modal.
- * @param {{name: string; document: string}} user - Datos actuales del usuario (opcional).
+ * @param {{tipoUsuario: string; seudonimo: string}} user - Datos actuales del usuario (opcional).
  * @param {function} reloadProfile - Función para recargar el perfil tras un update exitoso.
  */
-const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
-  // Estados para manejar la lógica del formulario y feedback
-  const [newName, setNewName] = useState("");
-  const [feedback, setFeedback] = useState(null); // { status: 'success'|'error', message: string }
-  console.log(user);
-  // Al abrir el modal, inicializa o limpia estados
+const ModalActualizarRol = ({ isOpen, onClose, user, reloadProfile }) => {
+  const [newRol, setNewRol] = useState("");
+  const [feedback, setFeedback] = useState(null);
+
   useEffect(() => {
     if (isOpen) {
-      setNewName(user?.name || "");
       setFeedback(null);
+      // Determina el rol opuesto
+      if (user?.tipoUsuario === "D") {
+        setNewRol("A");
+      } else {
+        setNewRol("D");
+      }
     }
   }, [isOpen, user]);
 
-  // Cierra modal y, si fue exitoso, recarga perfil
   const handleFeedbackClose = () => {
     if (feedback?.status === "success") {
       reloadProfile();
@@ -32,19 +34,16 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
     onClose();
   };
 
-  // Acción al hacer clic en Actualizar
   const handleUpdate = async () => {
-    // Validación básica
-    if (!newName.trim()) {
+    if (!newRol.trim()) {
       setFeedback({
         status: "error",
-        message: "El nombre no puede estar vacío",
+        message: "El rol no puede estar vacío",
       });
       return;
     }
 
     try {
-      // Obtener token desde localStorage
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error(
@@ -52,7 +51,6 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
         );
       }
 
-      // Petición PUT con Axios
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -60,14 +58,12 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
         },
       };
 
-      // Nota: Ajusta API.UPDATE_USER según tu backend.
+      // Ajustar la URL y el body según tu backend
       const response = await axios.put(
-        API.UPDATE_USER,
-        {
-          name: newName.trim(),
-          document: user?.document,
-          pseudonym: user?.document,
-        },
+        `${API.UPDATE_DEPENDIENTE}?seudonimo=${
+          user?.seudonimo
+        }&role=${newRol.trim()}`,
+        {},
         config
       );
 
@@ -75,32 +71,31 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
         throw new Error("Error en la respuesta del servidor");
       }
 
-      // Si todo va bien:
       setFeedback({
         status: "success",
-        message: "La información del usuario se actualizó correctamente.",
+        message: "El rol del usuario se actualizó correctamente.",
       });
     } catch (error) {
-      console.error("Error al actualizar usuario:", error);
+      console.error("Error al actualizar rol:", error);
       setFeedback({
         status: "error",
         message:
           error?.response?.data?.message ||
           error.message ||
-          "Ocurrió un error al actualizar.",
+          "Ocurrió un error al actualizar el rol.",
       });
     }
   };
 
-  // Si el modal no está abierto, no renderizamos nada en el DOM
   if (!isOpen) return null;
 
+  const rolActualTexto =
+    user?.tipoUsuario === "D" ? "Dependiente" : "Apoderado";
+
   return (
-    // Contenedor de modal
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow p-6 w-full max-w-sm">
         {feedback ? (
-          // Muestra feedback (éxito o error)
           <div className="text-center">
             <h2 className="text-xl font-bold mb-4 text-green-600">
               {feedback.status === "success" ? "¡Datos actualizados!" : "Error"}
@@ -114,30 +109,25 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
             </button>
           </div>
         ) : (
-          // Formulario para actualizar
           <>
-            <h2 className="text-xl font-semibold mb-4 text-center">
-              Actualizar Datos del Usuario
+            <h2 className="text-xl  mb-4 text-center">
+              Actualizar Rol del Usuario
             </h2>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Nombre Actual
-            </label>
-            <input
-              type="text"
-              readOnly
-              className="w-full mb-3 border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700"
-              value={user?.name || ""}
-            />
-
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Nuevo Nombre
-            </label>
-            <input
-              type="text"
-              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-azul"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
+            <p className="text-sm mb-4 text-gray-700 text-center">
+              Rol Actual:{" "}
+              <span className="font-semibold">{rolActualTexto}</span>
+            </p>
+            <select
+              className="w-full mb-4 border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:border-azul"
+              value={newRol}
+              onChange={(e) => setNewRol(e.target.value)}
+            >
+              {user?.tipoUsuario === "D" ? (
+                <option value="A">Cambiar a Apoderado</option>
+              ) : (
+                <option value="D">Cambiar a Dependiente</option>
+              )}
+            </select>
 
             <div className="flex justify-end gap-2">
               <button
@@ -160,4 +150,4 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
   );
 };
 
-export default ModalActualizarNombre;
+export default ModalActualizarRol;
