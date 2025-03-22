@@ -70,9 +70,13 @@ const Home = () => {
           >
             Exámenes de Laboratorio
           </Link>
-          <button className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center">
+          <Link
+            to="/examenImagen"
+            state={{ id: profileId, ficha }}
+            className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center"
+          >
             Examen de Imagen
-          </button>
+          </Link>
           <Link
             to="/examenesReceta"
             state={{ id: profileId, ficha }}

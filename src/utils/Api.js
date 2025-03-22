@@ -28,4 +28,5 @@ export const API = {
   CHATGPT: `${BASE_URL}/api/openai/analyze`,
   CHATGPT_CONSULTA: `${BASE_URL}/api/openai`,
   CHATGPT_CONSULTA_RECIPE: `${BASE_URL}/api/openai/recipe`,
+  CHATGPT_CONSULTA_IMAGE: `${BASE_URL}/api/openai/imageneology`,
 };
