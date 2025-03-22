@@ -9,8 +9,6 @@ import { API } from "../../utils/Api";
  * @returns {Promise<any>} La respuesta de la API.
  */
 export const updateHistorialMedico = async (historial) => {
-  console.log("Historial a actualizar:", historial);
-
   try {
     // Validar token
     const token = localStorage.getItem("token");

@@ -15,6 +15,7 @@ import PrivateRoute from "./utils/PrivateRoute";
 import ExamenesLaboratorioPage from "./pages/ExamenesLaboratorio";
 import ExamenesRecetaPage from "./pages/ExamenesReceta";
 import HistorialMedicoPage from "./pages/HistorialMedico";
+import ExamenesLaboratorioEditarPage from "./pages/ExamenesLaboratorioEditar";
 function App() {
   return (
     <>
@@ -36,6 +37,10 @@ function App() {
           <Route
             path="/examenesLaboratorio"
             element={<ExamenesLaboratorioPage />}
+          />
+          <Route
+            path="/examenesLaboratorioEditar"
+            element={<ExamenesLaboratorioEditarPage />}
           />
           <Route path="/examenesReceta" element={<ExamenesRecetaPage />} />
           <Route path="/historialMedico" element={<HistorialMedicoPage />} />
