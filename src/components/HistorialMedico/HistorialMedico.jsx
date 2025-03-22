@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { HistorialMedicoGET } from "./HistorialMedicoGET";
-import { updateHistorialMedico } from "./HistorialMedicoPUT";
 import CrearHistorialMedico from "./CrearHistorialMedico"; // Importamos el componente de CrearHistorialMedico
-import FormularioHistorialMedico from "./HistorialMedicoEditar";
 import { formatDatePrincipal } from "./Fechas";
 import { HistorialMedicoPOST } from "./HistorialMedicoPOST";
+import { deleteHistorialMedico } from "./HistorialMedicoDELETE";
 
 const HistorialMedico = () => {
   const { state: profile } = useLocation();
@@ -21,7 +20,8 @@ const HistorialMedico = () => {
       HistorialMedicoGET(profile.id)
         .then((data) => {
           if (data.historial && data.historial.length > 0) {
-            console.log("data", data.historial);
+            console.log("data.historial", data.historial);
+
             setHistorial(data.historial);
           }
           setUserDataId(data.userDataId); // Guardamos el userDataId
@@ -35,30 +35,6 @@ const HistorialMedico = () => {
     }
   }, [profile, isCreating]);
 
-  const handleActualizar = async (e, historialId) => {
-    e.preventDefault(); // Previene el comportamiento por defecto del evento
-    const updatedHistorial = historial.find((h) => h.id === historialId);
-
-    try {
-      const formattedDate = formatDatePrincipal(updatedHistorial.date);
-      const finalHistorial = { ...updatedHistorial, date: formattedDate };
-      console.log(finalHistorial);
-
-      setLoading(true);
-      await updateHistorialMedico(finalHistorial, profile?.id);
-
-      const updatedData = await HistorialMedicoGET(profile?.id);
-      if (updatedData.historial && updatedData.historial.length > 0) {
-        setHistorial(updatedData.historial);
-      }
-    } catch (error) {
-      console.error("Error al actualizar el historial:", error);
-      alert("Error al actualizar el historial");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleGuardar = async (newHistorial) => {
     try {
       const updatedHistorial = { ...newHistorial, userDataId };
@@ -66,12 +42,25 @@ const HistorialMedico = () => {
       const finalHistorial = { ...updatedHistorial, date: formattedDate };
 
       const success = await HistorialMedicoPOST(finalHistorial, setLoading);
+      HistorialMedicoGET(profile.id);
       if (success) {
         console.log("Historial médico creado exitosamente");
       }
     } catch (error) {
       console.error("Error al crear el historial médico:", error);
       alert("Error al crear el historial médico");
+    }
+  };
+
+  const handleEliminar = async (historialId) => {
+    const success = await deleteHistorialMedico(historialId, setLoading);
+    if (success) {
+      // Eliminar el historial localmente si fue exitoso
+      setHistorial((prevHistorial) =>
+        prevHistorial.filter((h) => h.id !== historialId)
+      );
+    } else {
+      alert("Error al eliminar el historial médico");
     }
   };
 
@@ -84,17 +73,6 @@ const HistorialMedico = () => {
       ) : (
         <>
           <CrearHistorialMedico handleGuardar={handleGuardar} />
-          {historial && historial.length > 0 && (
-            <>
-              {historial.map((h) => (
-                <FormularioHistorialMedico
-                  key={h.id}
-                  historial={h} // Solo pasamos el historial completo
-                  handleActualizar={(e) => handleActualizar(e, h.id)} // Se pasa solo la función
-                />
-              ))}
-            </>
-          )}
         </>
       )}
     </div>

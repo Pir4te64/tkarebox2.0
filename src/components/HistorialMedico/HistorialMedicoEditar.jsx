@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa"; // Importar los iconos
 import { formatDatePrincipal } from "./Fechas";
 
 const FormularioHistorialMedico = ({
   historial, // Manteniendo el nombre original de la prop
-  handleActualizar, // Recibimos handleActualizar como prop
+  handleEliminar, // Recibimos handleEliminar como prop
+  handleActualizar, // Recibimos la función de actualizar
 }) => {
-  const [historialState, setHistorial] = useState(historial); // Estado local para el historial
-  // Función para formatear la fecha en el formato yyyy-MM-dd (para mostrar en el input)
+  const [historialState, setHistorial] = useState(historial); // Mantener el historial en el estado local
+
+  // Usar useEffect para actualizar el historial cuando las props cambian
+  useEffect(() => {
+    setHistorial(historial);
+  }, [historial]);
+
   const formatDate = (date) => {
     if (Array.isArray(date) && date.length === 3) {
       const year = date[0];
@@ -106,21 +112,19 @@ const FormularioHistorialMedico = ({
     }
   };
 
-  // Actualiza el campo de tratamiento
-  const updateTreatment = (index, field, value) => {
-    const newTreatments = historialState.treatments.map((treatment, i) =>
-      i === index ? { ...treatment, [field]: value } : treatment
-    );
-    setHistorial({
-      ...historialState,
-      treatments: newTreatments,
-    });
-  };
-
   // Función para actualizar el historial
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleActualizar(e, historialState); // Enviar historial actualizado a la función handleActualizar
+    try {
+      const formattedDate = formatDatePrincipal(historialState.date);
+      const finalHistorial = { ...historialState, date: formattedDate };
+      // Aquí enviamos los datos actualizados al backend
+      await handleActualizar(finalHistorial); // Llamamos la función que vino de las props
+      alert("Historial actualizado exitosamente.");
+    } catch (error) {
+      console.error("Error al actualizar el historial:", error);
+      alert("Error al actualizar el historial");
+    }
   };
 
   return (
@@ -139,7 +143,7 @@ const FormularioHistorialMedico = ({
             <label className="block font-medium mb-1 text-azul">Fecha:</label>
             <input
               type="date"
-              value={formatDate(historialState.date)}
+              value={formatDatePrincipal(historialState.date)}
               onChange={(e) =>
                 setHistorial({
                   ...historialState,
@@ -299,7 +303,15 @@ const FormularioHistorialMedico = ({
           <FaPlus />
         </button>
       </details>
-
+      <div>
+        <button
+          type="button"
+          onClick={() => handleEliminar(historialState.id)} // Llamamos a la función handleEliminar cuando el usuario hace clic
+          className="text-red-500"
+        >
+          Eliminar Historial
+        </button>
+      </div>
       {/* Botón para actualizar */}
       <div className="">
         <button

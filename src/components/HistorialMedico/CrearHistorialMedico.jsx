@@ -116,7 +116,7 @@ const CrearHistorialMedico = ({ handleGuardar }) => {
 
   return (
     <form
-      className="space-y-6 mt-20 bg-blue-50 p-6 rounded-lg shadow-lg"
+      className="space-y-6 mt-10 bg-blue-50 p-6 rounded-lg shadow-lg"
       onSubmit={handleSubmit} // Cambiar el evento a 'handleSubmit'
     >
       {/* Datos */}
@@ -171,60 +171,72 @@ const CrearHistorialMedico = ({ handleGuardar }) => {
         </summary>
 
         {/* Síntomas originales */}
-        {historial.originalSymptoms?.map((symptom, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="text"
-              value={symptom || ""}
-              onChange={(e) =>
-                updateArrayField("originalSymptoms", index, e.target.value)
-              }
-              className="w-full border border-azul rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-azul"
-            />
+        <div className="space-y-2">
+          {historial.originalSymptoms?.map((symptom, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <input
+                type="text"
+                value={symptom || ""}
+                placeholder="Síntoma"
+                onChange={(e) =>
+                  updateArrayField("originalSymptoms", index, e.target.value)
+                }
+                className="w-full border border-azul rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-azul"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("originalSymptoms", index)}
+                className="text-red-500"
+              >
+                <FaMinus />
+              </button>
+            </div>
+          ))}
+          <div className="flex items-center space-x-2">
             <button
               type="button"
-              onClick={() => handleRemoveItem("originalSymptoms", index)}
-              className="text-red-500"
+              onClick={() => handleAddItem("originalSymptoms")}
+              className="text-azul bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
             >
-              <FaMinus /> {/* Icono de eliminación */}
+              <FaPlus />
             </button>
+            <span className="text-azul">Agregar síntoma</span>
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("originalSymptoms")}
-          className="text-azul bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus /> {/* Icono de adición */}
-        </button>
+        </div>
 
         {/* Diagnósticos */}
-        {historial.diagnoses?.map((diagnosis, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="text"
-              value={diagnosis || ""}
-              onChange={(e) =>
-                updateArrayField("diagnoses", index, e.target.value)
-              }
-              className="w-full border border-azul rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-azul"
-            />
+        <div className="space-y-2">
+          {historial.diagnoses?.map((diagnosis, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <input
+                type="text"
+                value={diagnosis || ""}
+                placeholder="Diagnóstico"
+                onChange={(e) =>
+                  updateArrayField("diagnoses", index, e.target.value)
+                }
+                className="w-full border border-azul rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-azul"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("diagnoses", index)}
+                className="text-red-500"
+              >
+                <FaMinus />
+              </button>
+            </div>
+          ))}
+          <div className="flex items-center space-x-2">
             <button
               type="button"
-              onClick={() => handleRemoveItem("diagnoses", index)}
-              className="text-red-500"
+              onClick={() => handleAddItem("diagnoses")}
+              className="text-azul bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
             >
-              <FaMinus />
+              <FaPlus />
             </button>
+            <span className="text-azul">Agregar diagnóstico</span>
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("diagnoses")}
-          className="text-azul bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus />
-        </button>
+        </div>
       </details>
 
       {/* Agrupación de Tratamientos, Seguimientos y Órdenes */}
@@ -234,130 +246,151 @@ const CrearHistorialMedico = ({ handleGuardar }) => {
         </summary>
 
         {/* Tratamientos */}
-        {historial.treatments?.map((treatment, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="date"
-              value={
-                treatment.treatmentDate
-                  ? formatDate(treatment.treatmentDate)
-                  : ""
-              }
-              onChange={(e) =>
-                updateTreatment(
-                  index,
-                  "treatmentDate",
-                  convertToDateArray(e.target.value)
-                )
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <input
-              type="text"
-              value={treatment.urlDocTreatment || ""}
-              onChange={(e) =>
-                updateTreatment(index, "urlDocTreatment", e.target.value)
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
+        <div className="space-y-2">
+          {historial.treatments?.map((treatment, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <input
+                type="date"
+                value={
+                  treatment.treatmentDate
+                    ? formatDate(treatment.treatmentDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  updateTreatment(
+                    index,
+                    "treatmentDate",
+                    convertToDateArray(e.target.value)
+                  )
+                }
+                className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="Fecha del tratamiento"
+              />
+              <input
+                type="text"
+                value={treatment.urlDocTreatment || ""}
+                onChange={(e) =>
+                  updateTreatment(index, "urlDocTreatment", e.target.value)
+                }
+                className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="URL Tratamiento"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("treatments", index)}
+                className="text-red-500"
+              >
+                <FaMinus />
+              </button>
+            </div>
+          ))}
+          <div className="flex items-center space-x-2">
             <button
               type="button"
-              onClick={() => handleRemoveItem("treatments", index)}
-              className="text-red-500"
+              onClick={() => handleAddItem("treatments")}
+              className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
             >
-              <FaMinus />
+              <FaPlus />
             </button>
+            <span className="text-azul">Agregar tratamiento</span>
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("treatments")}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus />
-        </button>
+        </div>
 
         {/* Seguimientos */}
-        {historial.followUps?.map((followUp, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="date"
-              value={
-                followUp.followUpDate ? formatDate(followUp.followUpDate) : ""
-              }
-              onChange={(e) =>
-                updateFollowUp(
-                  index,
-                  "followUpDate",
-                  convertToDateArray(e.target.value)
-                )
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <input
-              type="text"
-              value={followUp.followUpNotes || ""}
-              onChange={(e) =>
-                updateFollowUp(index, "followUpNotes", e.target.value)
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
+        <div className="space-y-2">
+          {historial.followUps?.map((followUp, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <input
+                type="date"
+                value={
+                  followUp.followUpDate ? formatDate(followUp.followUpDate) : ""
+                }
+                onChange={(e) =>
+                  updateFollowUp(
+                    index,
+                    "followUpDate",
+                    convertToDateArray(e.target.value)
+                  )
+                }
+                className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="Fecha de seguimiento"
+              />
+              <input
+                type="text"
+                value={followUp.followUpNotes || ""}
+                onChange={(e) =>
+                  updateFollowUp(index, "followUpNotes", e.target.value)
+                }
+                className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="URl Seguimiento"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("followUps", index)}
+                className="text-red-500"
+              >
+                <FaMinus />
+              </button>
+            </div>
+          ))}
+          <div className="flex items-center space-x-2">
             <button
               type="button"
-              onClick={() => handleRemoveItem("followUps", index)}
-              className="text-red-500"
+              onClick={() => handleAddItem("followUps")}
+              className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
             >
-              <FaMinus />
+              <FaPlus />
             </button>
+            <span className="text-azul">Agregar seguimiento</span>
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("followUps")}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus />
-        </button>
+        </div>
 
         {/* Órdenes */}
-        {historial.orders?.map((order, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="date"
-              value={order.ordersDate ? formatDate(order.ordersDate) : ""}
-              onChange={(e) =>
-                updateOrder(
-                  index,
-                  "ordersDate",
-                  convertToDateArray(e.target.value)
-                )
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <input
-              type="text"
-              value={order.urlDocOrders || ""}
-              onChange={(e) =>
-                updateOrder(index, "urlDocOrders", e.target.value)
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
+        <div className="space-y-2">
+          {historial.orders?.map((order, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <input
+                type="date"
+                value={order.ordersDate ? formatDate(order.ordersDate) : ""}
+                onChange={(e) =>
+                  updateOrder(
+                    index,
+                    "ordersDate",
+                    convertToDateArray(e.target.value)
+                  )
+                }
+                className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="Fecha de la orden"
+              />
+              <input
+                type="text"
+                value={order.urlDocOrders || ""}
+                onChange={(e) =>
+                  updateOrder(index, "urlDocOrders", e.target.value)
+                }
+                className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="URL Orden"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("orders", index)}
+                className="text-red-500"
+              >
+                <FaMinus />
+              </button>
+            </div>
+          ))}
+          <div className="flex items-center space-x-2">
             <button
               type="button"
-              onClick={() => handleRemoveItem("orders", index)}
-              className="text-red-500"
+              onClick={() => handleAddItem("orders")}
+              className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
             >
-              <FaMinus />
+              <FaPlus />
             </button>
+            <span className="text-azul">Agregar orden</span>
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("orders")}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus />
-        </button>
+        </div>
       </details>
 
       {/* Botón para guardar */}
