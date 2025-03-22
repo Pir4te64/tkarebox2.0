@@ -73,7 +73,7 @@ const Home = () => {
           <Link
             to="/examenImagen"
             state={{ id: profileId, ficha }}
-            className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center"
+            className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold h-24 flex items-center text-center justify-center"
           >
             Examen de Imagen
           </Link>
@@ -84,10 +84,14 @@ const Home = () => {
           >
             Recetas
           </Link>
-          <button className="bg-purple-600 text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center">
+          <Link
+            to="/historialMedico"
+            state={{ id: profileId }}
+            className="bg-purple-600 text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center text-center justify-center"
+          >
             Historial de Consultas Médicas
-          </button>
-          <button className="bg-gray-500 text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center">
+          </Link>
+          <button className="bg-gray-500 text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center text-center flex-col justify-center">
             Próximo Control
             <span className="block text-xs">(Actualmente no disponible)</span>
           </button>
