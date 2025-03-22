@@ -1,34 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa"; // Importar los iconos
 import { formatDatePrincipal } from "./Fechas";
+
 const FormularioHistorialMedico = ({
-  historial,
-  handleAddItem,
-  handleRemoveItem,
-  updateField,
-  updateArrayField,
-  updateTreatment,
-  updateFollowUp,
-  updateOrder,
+  historial, // Manteniendo el nombre original de la prop
   handleActualizar, // Recibimos handleActualizar como prop
 }) => {
-  const {
-    originalSymptoms,
-    diagnoses,
-    treatments,
-    followUps,
-    orders,
-    date,
-    specialty,
-    treatingPhysician,
-  } = historial;
-
+  const [historialState, setHistorial] = useState(historial); // Estado local para el historial
   // Función para formatear la fecha en el formato yyyy-MM-dd (para mostrar en el input)
   const formatDate = (date) => {
-    const year = date[0];
-    const month = date[1] < 10 ? `0${date[1]}` : date[1]; // Asegurarnos de que el mes tenga dos dígitos
-    const day = date[2] < 10 ? `0${date[2]}` : date[2]; // Asegurarnos de que el día tenga dos dígitos
-    return `${year}-${month}-${day}`;
+    if (Array.isArray(date) && date.length === 3) {
+      const year = date[0];
+      const month = date[1] < 10 ? `0${date[1]}` : date[1];
+      const day = date[2] < 10 ? `0${date[2]}` : date[2];
+      return `${year}-${month}-${day}`;
+    }
+    return ""; // Si la fecha no es válida, devolvemos una cadena vacía
   };
 
   // Función para convertir la fecha del input de tipo date a un array [year, month, day]
@@ -37,10 +24,109 @@ const FormularioHistorialMedico = ({
     return [year, month, day];
   };
 
+  // Función para agregar un nuevo ítem al array
+  const handleAddItem = (field) => {
+    if (field === "originalSymptoms") {
+      setHistorial({
+        ...historialState,
+        originalSymptoms: [...historialState.originalSymptoms, ""],
+      });
+    } else if (field === "diagnoses") {
+      setHistorial({
+        ...historialState,
+        diagnoses: [...historialState.diagnoses, ""],
+      });
+    } else if (field === "treatments") {
+      setHistorial({
+        ...historialState,
+        treatments: [
+          ...historialState.treatments,
+          { treatmentDate: [""], urlDocTreatment: "" },
+        ],
+      });
+    } else if (field === "followUps") {
+      setHistorial({
+        ...historialState,
+        followUps: [
+          ...historialState.followUps,
+          { followUpDate: [""], followUpNotes: "" },
+        ],
+      });
+    } else if (field === "orders") {
+      setHistorial({
+        ...historialState,
+        orders: [
+          ...historialState.orders,
+          { ordersDate: [""], urlDocOrders: "" },
+        ],
+      });
+    }
+  };
+
+  // Función para eliminar un ítem del array
+  const handleRemoveItem = (field, index) => {
+    if (field === "originalSymptoms") {
+      const updatedSymptoms = historialState.originalSymptoms.filter(
+        (_, i) => i !== index
+      );
+      setHistorial({
+        ...historialState,
+        originalSymptoms: updatedSymptoms,
+      });
+    } else if (field === "diagnoses") {
+      const updatedDiagnoses = historialState.diagnoses.filter(
+        (_, i) => i !== index
+      );
+      setHistorial({
+        ...historialState,
+        diagnoses: updatedDiagnoses,
+      });
+    } else if (field === "treatments") {
+      const updatedTreatments = historialState.treatments.filter(
+        (_, i) => i !== index
+      );
+      setHistorial({
+        ...historialState,
+        treatments: updatedTreatments,
+      });
+    } else if (field === "followUps") {
+      const updatedFollowUps = historialState.followUps.filter(
+        (_, i) => i !== index
+      );
+      setHistorial({
+        ...historialState,
+        followUps: updatedFollowUps,
+      });
+    } else if (field === "orders") {
+      const updatedOrders = historialState.orders.filter((_, i) => i !== index);
+      setHistorial({
+        ...historialState,
+        orders: updatedOrders,
+      });
+    }
+  };
+
+  // Actualiza el campo de tratamiento
+  const updateTreatment = (index, field, value) => {
+    const newTreatments = historialState.treatments.map((treatment, i) =>
+      i === index ? { ...treatment, [field]: value } : treatment
+    );
+    setHistorial({
+      ...historialState,
+      treatments: newTreatments,
+    });
+  };
+
+  // Función para actualizar el historial
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleActualizar(e, historialState); // Enviar historial actualizado a la función handleActualizar
+  };
+
   return (
     <form
-      className="space-y-6 mt-20 bg-blue-50 p-6 rounded-lg shadow-lg"
-      onSubmit={handleActualizar}
+      className="space-y-6 mt-0 bg-blue-50 p-6 rounded-lg shadow-lg"
+      onSubmit={handleSubmit}
     >
       {/* Datos */}
       <details className="border-b-2 pb-4">
@@ -53,9 +139,12 @@ const FormularioHistorialMedico = ({
             <label className="block font-medium mb-1 text-azul">Fecha:</label>
             <input
               type="date"
-              value={date ? formatDatePrincipal(date) : ""}
+              value={formatDate(historialState.date)}
               onChange={(e) =>
-                updateField("date", convertToDateArray(e.target.value))
+                setHistorial({
+                  ...historialState,
+                  date: convertToDateArray(e.target.value),
+                })
               }
               className="w-full border border-azul rounded px-3 py-2 focus:outline-none focus:ring focus:border-azul"
             />
@@ -67,8 +156,10 @@ const FormularioHistorialMedico = ({
             </label>
             <input
               type="text"
-              value={specialty || ""}
-              onChange={(e) => updateField("specialty", e.target.value)}
+              value={historialState.specialty || ""}
+              onChange={(e) =>
+                setHistorial({ ...historialState, specialty: e.target.value })
+              }
               className="w-full border border-azul rounded px-3 py-2 focus:outline-none focus:ring focus:border-azul"
             />
           </div>
@@ -79,8 +170,13 @@ const FormularioHistorialMedico = ({
             </label>
             <input
               type="text"
-              value={treatingPhysician || ""}
-              onChange={(e) => updateField("treatingPhysician", e.target.value)}
+              value={historialState.treatingPhysician || ""}
+              onChange={(e) =>
+                setHistorial({
+                  ...historialState,
+                  treatingPhysician: e.target.value,
+                })
+              }
               className="w-full border border-azul rounded px-3 py-2 focus:outline-none focus:ring focus:border-azul"
             />
           </div>
@@ -94,13 +190,18 @@ const FormularioHistorialMedico = ({
         </summary>
 
         {/* Síntomas originales */}
-        {originalSymptoms?.map((symptom, index) => (
+        {historialState.originalSymptoms?.map((symptom, index) => (
           <div key={index} className="flex items-center space-x-3">
             <input
               type="text"
               value={symptom || ""}
               onChange={(e) =>
-                updateArrayField("originalSymptoms", index, e.target.value)
+                setHistorial({
+                  ...historialState,
+                  originalSymptoms: historialState.originalSymptoms.map(
+                    (s, i) => (i === index ? e.target.value : s)
+                  ),
+                })
               }
               className="w-full border border-azul rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-azul"
             />
@@ -109,7 +210,7 @@ const FormularioHistorialMedico = ({
               onClick={() => handleRemoveItem("originalSymptoms", index)}
               className="text-red-500"
             >
-              <FaMinus /> {/* Icono de eliminación */}
+              <FaMinus />
             </button>
           </div>
         ))}
@@ -118,17 +219,22 @@ const FormularioHistorialMedico = ({
           onClick={() => handleAddItem("originalSymptoms")}
           className="text-azul bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
         >
-          <FaPlus /> {/* Icono de adición */}
+          <FaPlus />
         </button>
 
         {/* Diagnósticos */}
-        {diagnoses?.map((diagnosis, index) => (
+        {historialState.diagnoses?.map((diagnosis, index) => (
           <div key={index} className="flex items-center space-x-3">
             <input
               type="text"
               value={diagnosis || ""}
               onChange={(e) =>
-                updateArrayField("diagnoses", index, e.target.value)
+                setHistorial({
+                  ...historialState,
+                  diagnoses: historialState.diagnoses.map((d, i) =>
+                    i === index ? e.target.value : d
+                  ),
+                })
               }
               className="w-full border border-azul rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-azul"
             />
@@ -151,36 +257,29 @@ const FormularioHistorialMedico = ({
       </details>
 
       {/* Agrupación de Tratamientos, Seguimientos y Órdenes */}
+      {/* Tratamientos */}
       <details className="border-b-2 pb-4">
         <summary className="text-azul cursor-pointer font-semibold bg-blue-100 p-2 rounded-md hover:bg-blue-200 mb-2">
-          Tratamientos, Seguimientos y Órdenes:
+          Tratamientos
         </summary>
 
-        {/* Tratamientos */}
-        {treatments?.map((treatment, index) => (
+        {historialState.treatments?.map((treatment, index) => (
           <div key={index} className="flex items-center space-x-3">
             <input
               type="date"
-              value={
-                treatment.treatmentDate
-                  ? formatDate(treatment.treatmentDate)
-                  : ""
-              }
-              onChange={(e) =>
-                updateTreatment(
-                  index,
-                  "treatmentDate",
-                  convertToDateArray(e.target.value)
-                )
-              }
+              value={formatDate(treatment.treatmentDate)}
+              onChange={(e) => {
+                const newTreatmentDate = convertToDateArray(e.target.value);
+                updateTreatment(index, "treatmentDate", newTreatmentDate);
+              }}
               className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
             />
             <input
               type="text"
               value={treatment.urlDocTreatment || ""}
-              onChange={(e) =>
-                updateTreatment(index, "urlDocTreatment", e.target.value)
-              }
+              onChange={(e) => {
+                updateTreatment(index, "urlDocTreatment", e.target.value);
+              }}
               className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
             />
             <button
@@ -195,88 +294,6 @@ const FormularioHistorialMedico = ({
         <button
           type="button"
           onClick={() => handleAddItem("treatments")}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus />
-        </button>
-
-        {/* Seguimientos */}
-        {followUps?.map((followUp, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="date"
-              value={
-                followUp.followUpDate ? formatDate(followUp.followUpDate) : ""
-              }
-              onChange={(e) =>
-                updateFollowUp(
-                  index,
-                  "followUpDate",
-                  convertToDateArray(e.target.value)
-                )
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <input
-              type="text"
-              value={followUp.followUpNotes || ""}
-              onChange={(e) =>
-                updateFollowUp(index, "followUpNotes", e.target.value)
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <button
-              type="button"
-              onClick={() => handleRemoveItem("followUps", index)}
-              className="text-red-500"
-            >
-              <FaMinus />
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("followUps")}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
-        >
-          <FaPlus />
-        </button>
-
-        {/* Órdenes */}
-        {orders?.map((order, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <input
-              type="date"
-              value={order.ordersDate ? formatDate(order.ordersDate) : ""}
-              onChange={(e) =>
-                updateOrder(
-                  index,
-                  "ordersDate",
-                  convertToDateArray(e.target.value)
-                )
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <input
-              type="text"
-              value={order.urlDocOrders || ""}
-              onChange={(e) =>
-                updateOrder(index, "urlDocOrders", e.target.value)
-              }
-              className="w-full border border-blue-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring focus:border-blue-500"
-            />
-            <button
-              type="button"
-              onClick={() => handleRemoveItem("orders", index)}
-              className="text-red-500"
-            >
-              <FaMinus />
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => handleAddItem("orders")}
           className="text-blue-600 bg-blue-100 hover:bg-blue-200 p-2 my-2 rounded-md"
         >
           <FaPlus />
