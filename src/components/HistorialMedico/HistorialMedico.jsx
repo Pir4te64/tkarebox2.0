@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { HistorialMedicoGET } from "./HistorialMedicoGET";
 import { updateHistorialMedico } from "./HistorialMedicoPUT";
 import FormularioHistorialMedico from "./HistorialMedicoEditar";
 import useHistorialMedicoStore from "./useHistorialMedicoStore";
+import { formatDatePrincipal } from "./Fechas";
 
 const HistorialMedico = () => {
   const { state: profile } = useLocation();
@@ -18,17 +19,22 @@ const HistorialMedico = () => {
     updateOrder,
   } = useHistorialMedicoStore();
 
+  const [loading, setLoading] = useState(false); // Nuevo estado para el loader
+
   useEffect(() => {
     if (profile?.id) {
+      setLoading(true); // Empezamos a cargar los datos
       HistorialMedicoGET(profile.id)
         .then((data) => {
           if (data.historial && data.historial.length > 0) {
-            console.log("data.historial", data.historial);
             setHistorial(data.historial[0]);
           }
         })
         .catch((err) => {
           console.error("Error al obtener el historial médico:", err);
+        })
+        .finally(() => {
+          setLoading(false); // Terminamos de cargar los datos
         });
     }
   }, [profile, setHistorial]);
@@ -36,12 +42,23 @@ const HistorialMedico = () => {
   const handleActualizar = async (e) => {
     e.preventDefault();
     try {
-      const result = await updateHistorialMedico(historial, profile?.id);
-      console.log("Historial actualizado:", result);
-      alert("Historial actualizado correctamente");
+      // Formatea la fecha como cadena de texto en el formato yyyy-MM-dd
+      const formattedDate = formatDatePrincipal(historial.date);
+      const updatedHistorial = { ...historial, date: formattedDate };
+
+      setLoading(true); // Empezamos a cargar mientras se actualiza
+      const result = await updateHistorialMedico(updatedHistorial, profile?.id);
+
+      // Volver a obtener los datos después de actualizar
+      const updatedData = await HistorialMedicoGET(profile?.id);
+      if (updatedData.historial && updatedData.historial.length > 0) {
+        setHistorial(updatedData.historial[0]);
+      }
     } catch (error) {
       console.error("Error al actualizar el historial:", error);
       alert("Error al actualizar el historial");
+    } finally {
+      setLoading(false); // Terminamos de cargar los datos después de la actualización
     }
   };
 
@@ -126,17 +143,24 @@ const HistorialMedico = () => {
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <FormularioHistorialMedico
-        historial={historial}
-        handleAddItem={handleAddItem}
-        handleRemoveItem={handleRemoveItem}
-        updateField={updateField}
-        updateArrayField={updateArrayField}
-        updateTreatment={updateTreatment}
-        updateFollowUp={updateFollowUp}
-        updateOrder={updateOrder}
-        handleActualizar={handleActualizar}
-      />
+      {/* Mostrar loader mientras cargamos los datos */}
+      {loading ? (
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
+        </div>
+      ) : (
+        <FormularioHistorialMedico
+          historial={historial}
+          handleAddItem={handleAddItem}
+          handleRemoveItem={handleRemoveItem}
+          updateField={updateField}
+          updateArrayField={updateArrayField}
+          updateTreatment={updateTreatment}
+          updateFollowUp={updateFollowUp}
+          updateOrder={updateOrder}
+          handleActualizar={handleActualizar}
+        />
+      )}
     </div>
   );
 };
