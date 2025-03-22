@@ -1,35 +1,26 @@
 import React, { useState } from "react";
 import { FaIdCard } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import ModalActualizarRol from "./Modales/ModalActualizarRol";
-import ModalActualizarNombreAfiliado from "./Modales/ModalActualizarNombreAfiliado"; // Importa tu nuevo modal
+import ModalActualizarNombreAfiliado from "./Modales/ModalActualizarNombreAfiliado";
+import ModalActualizarPassword from "./Modales/ModalActualizarPassword";
+import ModalDetallesAfiliado from "./Modales/ModalDetallesAfiliado";
 
 const Afiliados = ({ afiliados, reloadProfile }) => {
-  const [isRolModalOpen, setIsRolModalOpen] = useState(false);
-  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
-  const [userSelected, setUserSelected] = useState(null);
+  const [activeModal, setActiveModal] = useState(null); // "rol", "name", "pass", "detail" o null
+  const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
 
-  // Abre el modal de rol
-  const handleOpenModalRol = (afil) => {
-    setUserSelected(afil);
-    setIsRolModalOpen(true);
+  // Función genérica para abrir un modal
+  const openModal = (type, afil) => {
+    setSelectedUser(afil);
+    setActiveModal(type);
   };
 
-  // Cierra el modal de rol
-  const handleCloseModalRol = () => {
-    setIsRolModalOpen(false);
-    setUserSelected(null);
-  };
-
-  // Abre el modal de nombre
-  const handleOpenModalName = (afil) => {
-    setUserSelected(afil);
-    setIsNameModalOpen(true);
-  };
-
-  // Cierra el modal de nombre
-  const handleCloseModalName = () => {
-    setIsNameModalOpen(false);
-    setUserSelected(null);
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setActiveModal(null);
+    setSelectedUser(null);
   };
 
   if (!afiliados || afiliados.length === 0) {
@@ -51,41 +42,103 @@ const Afiliados = ({ afiliados, reloadProfile }) => {
 
             <hr className="mb-3" />
 
-            <div className="flex flex-col md:flex-row gap-2">
-              <button
-                type="button"
-                className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
-                onClick={() => handleOpenModalRol(afil)}
-              >
-                Cambiar Rol
-              </button>
+            <details className="bg-white text-azul rounded-lg p-3 overflow-y-auto max-h-60">
+              <summary className="cursor-pointer font-bold text-center">
+                Funciones
+              </summary>
+              <div className="mt-2 flex flex-col gap-2">
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => openModal("rol", afil)}
+                >
+                  Cambiar Rol
+                </button>
 
-              <button
-                type="button"
-                className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
-                onClick={() => handleOpenModalName(afil)}
-              >
-                Actualizar Nombre
-              </button>
-            </div>
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => openModal("name", afil)}
+                >
+                  Actualizar Nombre
+                </button>
+
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => openModal("pass", afil)}
+                >
+                  Actualizar Contraseña
+                </button>
+
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => openModal("detail", afil)}
+                >
+                  Detalles
+                </button>
+
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => navigate("/historialMedico", { state: afil })}
+                >
+                  Historial Médico
+                </button>
+
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() =>
+                    navigate("/fichaMedicaAFiliado", { state: afil })
+                  }
+                >
+                  Ficha Medica
+                </button>
+
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => navigate("/contactos", { state: afil })}
+                >
+                  Contactos
+                </button>
+              </div>
+            </details>
           </li>
         ))}
       </ul>
 
       {/* Modal para actualizar rol */}
       <ModalActualizarRol
-        isOpen={isRolModalOpen}
-        onClose={handleCloseModalRol}
-        user={userSelected}
+        isOpen={activeModal === "rol"}
+        onClose={closeModal}
+        user={selectedUser}
         reloadProfile={reloadProfile}
       />
 
-      {/* Modal para actualizar nombre (Afiliado) */}
+      {/* Modal para actualizar nombre */}
       <ModalActualizarNombreAfiliado
-        isOpen={isNameModalOpen}
-        onClose={handleCloseModalName}
-        user={userSelected}
+        isOpen={activeModal === "name"}
+        onClose={closeModal}
+        user={selectedUser}
         reloadProfile={reloadProfile}
+      />
+
+      {/* Modal para actualizar contraseña */}
+      <ModalActualizarPassword
+        isOpen={activeModal === "pass"}
+        onClose={closeModal}
+        userDocument={selectedUser?.documento}
+        reloadProfile={reloadProfile}
+      />
+
+      {/* Modal para detalles del afiliado */}
+      <ModalDetallesAfiliado
+        isOpen={activeModal === "detail"}
+        onClose={closeModal}
+        user={selectedUser}
       />
     </>
   );

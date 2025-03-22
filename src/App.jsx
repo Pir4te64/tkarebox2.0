@@ -16,6 +16,7 @@ import ExamenesLaboratorioPage from "./pages/ExamenesLaboratorio";
 import ExamenesRecetaPage from "./pages/ExamenesReceta";
 import HistorialMedicoPage from "./pages/HistorialMedico";
 import ExamenesLaboratorioEditarPage from "./pages/ExamenesLaboratorioEditar";
+import { FichaMedicaAFiliadoPage } from "./pages/FichaMedicaAfiliado";
 function App() {
   return (
     <>
@@ -44,6 +45,10 @@ function App() {
           />
           <Route path="/examenesReceta" element={<ExamenesRecetaPage />} />
           <Route path="/historialMedico" element={<HistorialMedicoPage />} />
+          <Route
+            path="/fichaMedicaAFiliado"
+            element={<FichaMedicaAFiliadoPage />}
+          />
         </Route>
       </Routes>
     </>

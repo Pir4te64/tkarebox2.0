@@ -29,7 +29,12 @@ const Administracion = () => {
   }, []);
 
   // Manejo de estados
-  if (loading) return <div className="p-4">Cargando...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center p-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-azul"></div>
+      </div>
+    );
   if (error) return <div className="p-4">Error: {error}</div>;
   if (!profile) return <div className="p-4">No hay datos de perfil.</div>;
 
@@ -41,7 +46,7 @@ const Administracion = () => {
 
       {/* Lista de afiliados */}
       <div className="bg-white w-full max-w-xl p-4 rounded-xl shadow">
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">
+        <h3 className="text-lg font-semibold text-gray-800 ">
           Lista de Afiliados
         </h3>
 

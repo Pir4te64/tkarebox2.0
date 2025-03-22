@@ -20,7 +20,6 @@ export default function ModalActualizarPassword({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [feedback, setFeedback] = useState(null); // { status: 'success' | 'error', message: string }
-
   // Al abrir el modal, limpia los campos y feedback
   useEffect(() => {
     if (isOpen) {

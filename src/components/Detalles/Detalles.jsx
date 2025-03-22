@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { ObtenerFichaGET } from "../Administracion/FichaMedica/ObtenerFichaGET";
 
 const DetallesFicha = () => {
-  const { state: profile } = useLocation();
+  const { state: profile, afil } = useLocation();
   const [ficha, setFicha] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

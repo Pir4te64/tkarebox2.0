@@ -52,13 +52,13 @@ const Home = () => {
         <div className="grid grid-cols-2 gap-4 w-full max-w-md">
           <Link
             to="/administracion"
-            className="bg-black text-center text-white py-4 px-2 rounded-lg font-semibold"
+            className="bg-black text-center text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center"
           >
             Menú de Administración
           </Link>
           <Link
             to="/fichaMedica"
-            className="bg-yellow-500 text-white text-center py-4 px-2 rounded-lg font-semibold"
+            className="bg-yellow-500 text-white text-center py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center"
           >
             Perfil de Identificación Médica
           </Link>
@@ -66,36 +66,36 @@ const Home = () => {
           <Link
             to="/examenesLaboratorio"
             state={{ id: profileId, ficha }}
-            className="bg-indigo-700 text-white py-4 px-2 rounded-lg font-semibold text-center"
+            className="bg-indigo-700 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center h-24"
           >
             Exámenes de Laboratorio
           </Link>
-          <button className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold">
+          <button className="bg-yellow-500 text-black py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center">
             Examen de Imagen
           </button>
           <Link
             to="/examenesReceta"
-            className="bg-green-600 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center"
+            state={{ id: profileId, ficha }}
+            className="bg-green-600 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center h-24"
           >
             Recetas
           </Link>
-          <button className="bg-purple-600 text-white py-4 px-2 rounded-lg font-semibold">
+          <button className="bg-purple-600 text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center">
             Historial de Consultas Médicas
           </button>
-          <button className="bg-gray-500 text-white py-4 px-2 rounded-lg font-semibold">
+          <button className="bg-gray-500 text-white py-4 px-2 rounded-lg font-semibold h-24 flex items-center justify-center">
             Próximo Control
             <span className="block text-xs">(Actualmente no disponible)</span>
           </button>
           <Link
             to="/contactos"
             state={{ id: profileId }}
-            className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center"
+            className="bg-red-600 text-white py-4 px-2 rounded-lg font-semibold text-center flex items-center justify-center h-24"
           >
             Datos de Emergencia
           </Link>
         </div>
 
-        {error && <p className="text-center text-red-500 mt-4">{error}</p>}
         {!error && !profileId && (
           <p className="text-center text-yellow-300 mt-4">
             El perfil no contiene un ID válido.

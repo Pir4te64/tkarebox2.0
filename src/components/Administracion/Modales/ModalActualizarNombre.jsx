@@ -15,7 +15,6 @@ const ModalActualizarNombre = ({ isOpen, onClose, user, reloadProfile }) => {
   // Estados para manejar la lógica del formulario y feedback
   const [newName, setNewName] = useState("");
   const [feedback, setFeedback] = useState(null); // { status: 'success'|'error', message: string }
-  console.log(user);
   // Al abrir el modal, inicializa o limpia estados
   useEffect(() => {
     if (isOpen) {

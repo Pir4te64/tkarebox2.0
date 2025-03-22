@@ -27,4 +27,5 @@ export const API = {
   FILES_UPLOAD: `${BASE_URL}/files/upload`,
   CHATGPT: `${BASE_URL}/api/openai/analyze`,
   CHATGPT_CONSULTA: `${BASE_URL}/api/openai`,
+  CHATGPT_CONSULTA_RECIPE: `${BASE_URL}/api/openai/recipe`,
 };

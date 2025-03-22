@@ -35,11 +35,18 @@ const ChronicDiseaseSection = () => {
       });
     }
   };
+  // Dentro de tu componente ChronicDiseaseSection
+  const isFormComplete =
+    newDisease.enfermedad.trim() !== "" &&
+    newDisease.doctorEmail.trim() !== "" &&
+    newDisease.centroMedico.trim() !== "" &&
+    newDisease.medicamento.trim() !== "" &&
+    newDisease.dosis.trim() !== "";
 
   return (
     <div>
       <details className="mb-4 bg-blue-600 text-white p-4 rounded">
-        <summary className="cursor-pointer font-bold mb-2">
+        <summary className="cursor-pointer font-bold ">
           Agregar Enfermedad Crónica
         </summary>
         <div className="mt-4 space-y-3">
@@ -78,15 +85,16 @@ const ChronicDiseaseSection = () => {
 
           <button
             onClick={handleAddDisease}
-            className="py-2 px-4 bg-green-500 text-white rounded cursor-pointer"
+            disabled={!isFormComplete}
+            className="py-2 px-4 bg-green-700 w-full text-white rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Agregar Enfermedad +
           </button>
         </div>
       </details>
 
-      <details className="mb-4 bg-gray-50 p-4 rounded">
-        <summary className="cursor-pointer font-bold text-lg mb-2">
+      <details className=" p-4 rounded">
+        <summary className="cursor-pointer font-bold text-lg bg-azul text-white p-4 rounded shadow-md">
           Enfermedades Crónicas Registradas
         </summary>
         {chronicDiseases.length > 0 ? (

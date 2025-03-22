@@ -10,7 +10,7 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-black text-white rounded-b-lg shadow-xl w-full p-6 mb-4">
+    <div className="bg-black text-white rounded-b-lg shadow-xl w-full p-6 mb-3">
       {/* Fila para nombre */}
       <div className="flex items-center gap-2 mb-2">
         <FaUser size={20} />

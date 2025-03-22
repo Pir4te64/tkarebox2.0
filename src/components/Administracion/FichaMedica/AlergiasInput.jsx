@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPlus, FaMinus } from "react-icons/fa";
 
 const AllergyInputSection = ({
   title,
@@ -11,9 +12,7 @@ const AllergyInputSection = ({
 }) => {
   return (
     <details className="mb-4 bg-azul p-4 rounded">
-      <summary className="cursor-pointer font-bold mb-2 text-white">
-        {title}
-      </summary>
+      <summary className="cursor-pointer font-bold text-white">{title}</summary>
       <div className="flex gap-2 mb-2">
         <input
           type="text"
@@ -26,7 +25,7 @@ const AllergyInputSection = ({
           onClick={onAddAllergy}
           className="p-2 bg-blue-500 text-white rounded"
         >
-          +
+          <FaPlus />
         </button>
       </div>
       <ul className="ml-4">
@@ -37,7 +36,7 @@ const AllergyInputSection = ({
               onClick={() => onRemoveAllergy(allergy)}
               className="text-red-500 ml-2 text-xl"
             >
-              -
+              <FaMinus />
             </button>
           </li>
         ))}

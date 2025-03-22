@@ -133,10 +133,10 @@ const Contactos = () => {
             <p className="text-green-600 text-center mt-2">{creationSuccess}</p>
           )}
         </div>
-
-        {/* Lista de contactos existentes */}
-        <ContactosGET userId={profile.id} key={reloadKey} />
       </details>
+
+      {/* Lista de contactos existentes */}
+      <ContactosGET userId={profile.id} key={reloadKey} />
     </div>
   );
 };

@@ -32,9 +32,7 @@ export const deleteHistorialMedico = async (historialId, setLoading) => {
 
     // Verificar si la respuesta es exitosa
     if (response.status === 200) {
-      console.log(
-        `Historial médico con ID ${historialId} eliminado correctamente.`
-      );
+      alert(`Historial médico con ID ${historialId} eliminado correctamente.`);
       return true;
     } else {
       console.error("Error al eliminar el historial médico.");

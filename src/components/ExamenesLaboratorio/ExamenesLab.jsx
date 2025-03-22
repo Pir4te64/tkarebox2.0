@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { examenesLabGET } from "./ExamenesLabGET";
-import Layout from "../Layout";
 import ChartForTest from "./ExamenGrafico";
 
 const ExamenesLab = () => {

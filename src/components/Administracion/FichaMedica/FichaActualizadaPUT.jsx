@@ -2,8 +2,6 @@ import axios from "axios";
 import { API } from "../../../utils/Api";
 
 export async function FichaActualizadaPUT(updatedData) {
-  console.log("updatedData", updatedData); // Verifica que no esté vacío
-
   try {
     const token = localStorage.getItem("token");
     if (!token) {

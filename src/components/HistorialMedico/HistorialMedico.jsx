@@ -44,7 +44,7 @@ const HistorialMedico = () => {
       const success = await HistorialMedicoPOST(finalHistorial, setLoading);
       HistorialMedicoGET(profile.id);
       if (success) {
-        console.log("Historial médico creado exitosamente");
+        alert("Historial médico creado exitosamente");
       }
     } catch (error) {
       console.error("Error al crear el historial médico:", error);

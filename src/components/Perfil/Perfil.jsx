@@ -43,7 +43,7 @@ const DependientePerfil = () => {
   return (
     <div className="flex flex-col bg-gray-100">
       {/* Sección superior con color y la imagen */}
-      <div className="flex-grow h-[400px] bg-azul rounded-b-3xl shadow-xl p-8 flex flex-col items-center justify-center">
+      <div className="flex-grow h-[300px] bg-azul rounded-b-3xl shadow-xl p-8 flex flex-col items-center justify-center">
         <img
           src={loginImg}
           alt="Dependiente"

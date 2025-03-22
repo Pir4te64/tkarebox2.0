@@ -78,7 +78,6 @@ const ExamenesLaboratorioEditar = () => {
     try {
       setLoading(true);
       const response = await updateHistorialMedico(historial);
-      console.log("Historial actualizado con éxito:", response);
       alert("Historial actualizado exitosamente");
     } catch (error) {
       console.error("Error al actualizar el historial médico:", error);

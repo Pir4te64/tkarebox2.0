@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useFichaMedicaStore } from "./useFichaMedicaStore";
-import CustomInput from "./CustomInput";
-import AllergyInputSection from "./AlergiasInput";
-import ChronicDiseaseSection from "./EnfermedadesCronicas";
-import { CrearFichaPOST } from "./CrearFichaPOST";
-import { FichaActualizadaPUT } from "./FichaActualizadaPUT"; // Asegúrate de la ruta correcta
-import { profileAdminGET } from "../PerfilAdminGET";
-import { ObtenerFichaGET } from "./ObtenerFichaGET";
-import { formatFecha, transformFichaData } from "./TransformarFichaData";
-import Header from "../../Header";
-const FichaMedica = () => {
+import { useLocation } from "react-router-dom";
+import { useFichaMedicaStore } from "../../Administracion/FichaMedica/useFichaMedicaStore";
+import CustomInput from "../../Administracion/FichaMedica/CustomInput";
+import AllergyInputSection from "../../Administracion/FichaMedica/AlergiasInput";
+import ChronicDiseaseSection from "../../Administracion/FichaMedica/EnfermedadesCronicas";
+import { CrearFichaPOST } from "../../Administracion/FichaMedica/CrearFichaPOST";
+import { FichaActualizadaPUT } from "../../Administracion/FichaMedica/FichaActualizadaPUT"; // Asegúrate de la ruta correcta
+import { ObtenerFichaGET } from "../../Administracion/FichaMedica/ObtenerFichaGET";
+import {
+  formatFecha,
+  transformFichaData,
+} from "../../Administracion/FichaMedica/TransformarFichaData";
+import Header from "../../../components/Header";
+
+const FichaMedicaAfiliado = () => {
+  // Obtenemos el ID del afiliado desde el state de navegación
+  const location = useLocation();
+  const affiliateFromState = location.state?.id; // Ahora solo usamos este ID
+
   const {
     fechaNac,
     setFechaNac,
@@ -32,30 +40,15 @@ const FichaMedica = () => {
   const [newMedicationAllergy, setNewMedicationAllergy] = useState("");
   const [newOtherAllergy, setNewOtherAllergy] = useState("");
 
-  // Estado local para almacenar los datos del afiliado
-  const [afiliado, setAfiliado] = useState(null);
   // Estado para determinar si ya existe una ficha
   const [isFichaExist, setIsFichaExist] = useState(false);
 
-  // Obtener datos del afiliado al montar el componente
+  // Una vez que se tiene el ID del afiliado, obtener la ficha, actualizar el store y marcar que existe
   useEffect(() => {
-    const fetchAffiliate = async () => {
-      try {
-        const data = await profileAdminGET();
-        setAfiliado(data);
-      } catch (error) {
-        alert("Error al obtener datos del afiliado: " + error.message);
-      }
-    };
-    fetchAffiliate();
-  }, []);
-
-  // Una vez que se obtiene el afiliado, obtener la ficha, actualizar el store y marcar que existe
-  useEffect(() => {
-    if (afiliado && afiliado.id) {
+    if (affiliateFromState) {
       const fetchFicha = async () => {
         try {
-          const fichaData = await ObtenerFichaGET(afiliado.id);
+          const fichaData = await ObtenerFichaGET(affiliateFromState);
           if (fichaData?.body) {
             const transformedData = transformFichaData(fichaData.body);
             setFichaMedicaData(transformedData);
@@ -69,7 +62,7 @@ const FichaMedica = () => {
       };
       fetchFicha();
     }
-  }, [afiliado, setFichaMedicaData]);
+  }, [affiliateFromState, setFichaMedicaData]);
 
   // Función para preparar la data actualizada desde el store para PUT/POST
   const prepareFichaData = () => {
@@ -83,8 +76,8 @@ const FichaMedica = () => {
       chronicDiseases,
     } = useFichaMedicaStore.getState();
 
-    // Asegúrate de que afiliado esté definido
-    if (!afiliado || !afiliado.id) {
+    // Verificamos que tengamos un ID
+    if (!affiliateFromState) {
       return undefined;
     }
 
@@ -123,7 +116,7 @@ const FichaMedica = () => {
       : [];
 
     return {
-      userId: afiliado.id,
+      userId: affiliateFromState,
       userDataId: "",
       birthDate: formattedDate,
       weight: String(peso),
@@ -138,7 +131,7 @@ const FichaMedica = () => {
   // Función para manejar el submit del formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!afiliado || !afiliado.id) {
+    if (!affiliateFromState) {
       alert("No se pudo obtener el ID del afiliado.");
       return;
     }
@@ -147,11 +140,11 @@ const FichaMedica = () => {
     if (isFichaExist) {
       response = await FichaActualizadaPUT(updatedData);
     } else {
-      response = await CrearFichaPOST(afiliado.id);
+      response = await CrearFichaPOST(affiliateFromState);
     }
     if (response) {
       try {
-        const fichaData = await ObtenerFichaGET(afiliado.id);
+        const fichaData = await ObtenerFichaGET(affiliateFromState);
         if (fichaData?.body) {
           const transformedData = transformFichaData(fichaData.body);
           setFichaMedicaData(transformedData);
@@ -164,13 +157,14 @@ const FichaMedica = () => {
 
   return (
     <div>
-      <Header title={"Ficha Medica"} />
+      <Header title={"Ficha Medica Afiliado"} />
+      {/* Puedes mostrar información adicional si se requiere */}
       <form
         onSubmit={handleSubmit}
         className="max-w-md mx-auto p-3 mt-20 font-sans border border-gray-300 rounded-lg overflow-y-auto"
       >
         <details className="mb-4 bg-azul p-2 rounded">
-          <summary className="cursor-pointer font-bold text-lg  bg-azul text-white p-2 rounded">
+          <summary className="cursor-pointer font-bold text-lg bg-azul text-white p-2 rounded">
             Información Personal
           </summary>
 
@@ -260,9 +254,8 @@ const FichaMedica = () => {
           newAllergyValue={newOtherAllergy}
           onNewAllergyChange={(e) => setNewOtherAllergy(e.target.value)}
           onAddAllergy={(e) => {
+            e.preventDefault();
             if (newOtherAllergy.trim() !== "") {
-              e.preventDefault();
-
               addOtherAllergy(newOtherAllergy.trim());
               setNewOtherAllergy("");
             }
@@ -286,4 +279,4 @@ const FichaMedica = () => {
   );
 };
 
-export default FichaMedica;
+export default FichaMedicaAfiliado;
