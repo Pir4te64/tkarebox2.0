@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaIdCard } from "react-icons/fa";
 import ModalActualizarNombre from "./Modales/ModalActualizarNombre";
 import ModalActualizarPassword from "./Modales/ModalActualizarPassword";
+import ModalHistorialConsultas from "./Modales/ModalHistorialClinico";
 
 const TarjetaAdmin = ({ profile, reloadProfile }) => {
   const [showModalName, setShowModalName] = useState(false);
   const [showModalPass, setShowModalPass] = useState(false);
   const navigate = useNavigate();
-
+  const [showModalHistorial, setShowModalHistorial] = useState(false);
   return (
     <div className="bg-black text-white rounded-b-lg shadow-xl w-full p-6 mb-3">
       {/* Fila para nombre */}
@@ -57,18 +58,28 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
           Detalles
         </button>
 
-        {/* Nuevo botón para ir a Contactos */}
+        {/* Botón para Contactos */}
         <button
           onClick={() => navigate("/contactos", { state: profile })}
-          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
         >
           Contactos
         </button>
+
+        {/* Nuevo botón: Historial de consultas medicas */}
         <button
           onClick={() => navigate("/historialMedico", { state: profile })}
-          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200"
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
         >
-          Historial Médico
+          Historial Medico
+        </button>
+
+        {/* Botón existente: Historial Médico */}
+        <button
+          onClick={() => setShowModalHistorial(true)}
+          className="bg-white text-azul w-full py-2 px-3 rounded-lg font-semibold transition hover:bg-gray-200 mb-2"
+        >
+          Historial de consultas medicas
         </button>
       </details>
 
@@ -86,6 +97,11 @@ const TarjetaAdmin = ({ profile, reloadProfile }) => {
         onClose={() => setShowModalPass(false)}
         userDocument={profile.documento}
         reloadProfile={reloadProfile}
+      />
+      <ModalHistorialConsultas
+        isOpen={showModalHistorial}
+        onClose={() => setShowModalHistorial(false)}
+        user={profile}
       />
     </div>
   );

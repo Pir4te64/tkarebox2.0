@@ -1764,6 +1764,20 @@ tailwindcss@3:
     resolve "^1.22.8"
     sucrase "^3.35.0"
 
+"tcarebox@file:":
+  version "0.0.0"
+  resolved "file:"
+  dependencies:
+    axios "^1.8.4"
+    chart.js "^4.4.8"
+    react "^19.0.0"
+    react-chartjs-2 "^5.3.0"
+    react-dom "^19.0.0"
+    react-icons "^5.5.0"
+    react-router-dom "^7.4.0"
+    tcarebox "file:"
+    zustand "^5.0.3"
+
 thenify-all@^1.0.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/thenify-all/-/thenify-all-1.6.0.tgz"

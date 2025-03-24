@@ -5,9 +5,10 @@ import ModalActualizarRol from "./Modales/ModalActualizarRol";
 import ModalActualizarNombreAfiliado from "./Modales/ModalActualizarNombreAfiliado";
 import ModalActualizarPassword from "./Modales/ModalActualizarPassword";
 import ModalDetallesAfiliado from "./Modales/ModalDetallesAfiliado";
+import ModalHistorialConsultas from "./Modales/ModalHistorialClinico";
 
 const Afiliados = ({ afiliados, reloadProfile }) => {
-  const [activeModal, setActiveModal] = useState(null); // "rol", "name", "pass", "detail" o null
+  const [activeModal, setActiveModal] = useState(null); // "rol", "name", "pass", "detail", "consultas" o null
   const [selectedUser, setSelectedUser] = useState(null);
   const navigate = useNavigate();
 
@@ -82,6 +83,14 @@ const Afiliados = ({ afiliados, reloadProfile }) => {
                 <button
                   type="button"
                   className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
+                  onClick={() => openModal("consultas", afil)}
+                >
+                  Historial de consultas medicas
+                </button>
+
+                <button
+                  type="button"
+                  className="w-full py-2 text-sm text-white bg-azul rounded-md hover:bg-blue-100 hover:text-blue-700"
                   onClick={() => navigate("/historialMedico", { state: afil })}
                 >
                   Historial Médico
@@ -137,6 +146,13 @@ const Afiliados = ({ afiliados, reloadProfile }) => {
       {/* Modal para detalles del afiliado */}
       <ModalDetallesAfiliado
         isOpen={activeModal === "detail"}
+        onClose={closeModal}
+        user={selectedUser}
+      />
+
+      {/* Modal para Historial de consultas medicas */}
+      <ModalHistorialConsultas
+        isOpen={activeModal === "consultas"}
         onClose={closeModal}
         user={selectedUser}
       />
