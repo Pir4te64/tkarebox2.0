@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { FaTimes } from "react-icons/fa";
 import { HistorialMedicoGET } from "../../HistorialMedico/HistorialMedicoGET";
+import PieChartConsultas from "../PieChartConsultas";
 
 const ModalHistorialConsultas = ({ isOpen, onClose, user }) => {
   const [historial, setHistorial] = useState(null);
@@ -52,41 +53,11 @@ const ModalHistorialConsultas = ({ isOpen, onClose, user }) => {
           </button>
         </div>
         {/* Contenedor scrollable para el contenido */}
-        <div
-          className="mt-4 overflow-y-auto"
-          style={{ maxHeight: "calc(90vh - 120px)" }}
-        >
-          {historial ? (
-            Object.keys(historialAgrupado).length > 0 ? (
-              Object.keys(historialAgrupado).map((especialidad) => {
-                const firstConsulta = historialAgrupado[especialidad][0];
-                return (
-                  <div key={especialidad} className="mb-4 border-b pb-2">
-                    <h4 className="font-bold text-azul">
-                      {especialidad} - {firstConsulta.treatingPhysician}
-                    </h4>
-                    {historialAgrupado[especialidad].map((consulta) => (
-                      <div key={consulta.id} className="mt-2">
-                        <p className="text-gray-600">
-                          <span className="font-medium">Fecha:</span>{" "}
-                          {consulta.date}
-                        </p>
-                        <p className="text-gray-600">
-                          <span className="font-medium">Diagnóstico(s):</span>{" "}
-                          {consulta.diagnoses.join(", ")}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                );
-              })
-            ) : (
-              <p className="text-center text-gray-600">
-                No se encontraron registros en el historial.
-              </p>
-            )
+        <div className="mt-4">
+          {historial && historial.historial ? (
+            <PieChartConsultas data={historial.historial} />
           ) : (
-            <p className="text-center text-gray-600">Obteniendo historial...</p>
+            <p className="text-center text-gray-600">Cargando gráfico...</p>
           )}
         </div>
       </div>

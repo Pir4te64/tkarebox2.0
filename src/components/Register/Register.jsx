@@ -54,7 +54,7 @@ const Registro = () => {
         <form className="w-full space-y-5" onSubmit={handleSubmit}>
           <div className="flex flex-col w-full">
             <label className="text-sm font-medium text-gray-600 mb-1">
-              Documento
+              Documento (RUT)
             </label>
             <div className="relative">
               <FaIdCard className="absolute top-3 left-3 text-azul" />
