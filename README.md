@@ -5,7 +5,7 @@
 
 > website for larousse
 
-### 🏠 [Homepage](App.jsx)
+### 🏠 [Homepage](src/App.jsx)
 
 ## Install
 
