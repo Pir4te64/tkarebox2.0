@@ -34,6 +34,14 @@ const ChartForTest = ({ data, examName }) => {
     return isNaN(number) ? 0 : number;
   });
 
+  // Tomamos referenceMin y referenceMax del primer item (si existe)
+  let referenceMin = "";
+  let referenceMax = "";
+  if (filteredData.length > 0) {
+    referenceMin = filteredData[0].referenceMin || "";
+    referenceMax = filteredData[0].referenceMax || "";
+  }
+
   const chartData = {
     labels,
     datasets: [
@@ -54,8 +62,15 @@ const ChartForTest = ({ data, examName }) => {
   };
 
   return (
-    // Aseguramos que el contenedor tenga una altura definida para que Chart.js pueda renderizarse correctamente
-    <div className="">
+    <div className="w-full">
+      {/* Mostrar rangos si existen */}
+      {filteredData.length > 0 && (
+        <p className="text-sm text-gray-500 mb-2">
+          Rango mínimo: {referenceMin} | Rango máximo: {referenceMax}
+        </p>
+      )}
+
+      {/* El gráfico de barras */}
       <Bar data={chartData} options={options} />
     </div>
   );
