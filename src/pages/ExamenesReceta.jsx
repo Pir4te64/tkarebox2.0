@@ -5,7 +5,7 @@ import Header from "../components/Header";
 const ExamenesRecetaPage = () => {
   return (
     <Layout>
-      <Header title={"Examenes de Receta"} />
+      <Header title={"Receta"} />
       <ExamenesReceta />
     </Layout>
   );

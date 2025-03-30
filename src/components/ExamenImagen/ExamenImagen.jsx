@@ -36,11 +36,11 @@ const ExamenImagen = () => {
   const studies = data.body;
 
   return (
-    <div className="p-4 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-white text-center">
+    <div className='p-4 min-h-screen'>
+      <h1 className='text-3xl font-bold mb-6 text-white text-center'>
         Examen Imagen
       </h1>
-      <div className="grid grid-cols-1 gap-6">
+      <div className='grid grid-cols-1 gap-6 h-[500px] overflow-y-auto'>
         {studies.map((study) => {
           // Formatear la fecha: la fecha viene como [año, mes, día]
           const [year, month, day] = study.date;
@@ -48,36 +48,34 @@ const ExamenImagen = () => {
           return (
             <div
               key={study.id}
-              className="bg-white border-l-4 border-azul shadow-md rounded p-4"
-            >
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Fecha: </span>
-                <span className="text-gray-700">{formattedDate}</span>
+              className='bg-white border-l-4 border-azul shadow-md rounded p-4'>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Fecha: </span>
+                <span className='text-gray-700'>{formattedDate}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Estudio: </span>
-                <span className="text-gray-700">{study.studyName}</span>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Estudio: </span>
+                <span className='text-gray-700'>{study.studyName}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Reporte: </span>
-                <span className="text-gray-700">{study.studyReport}</span>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Reporte: </span>
+                <span className='text-gray-700'>{study.studyReport}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Conclusión: </span>
-                <span className="text-gray-700">{study.conclusion}</span>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Conclusión: </span>
+                <span className='text-gray-700'>{study.conclusion}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Médico: </span>
-                <span className="text-gray-700">{study.medical}</span>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Médico: </span>
+                <span className='text-gray-700'>{study.medical}</span>
               </div>
               <div>
-                <span className="font-semibold text-azul">Imagen: </span>
+                <span className='font-semibold text-azul'>Imagen: </span>
                 <a
                   href={study.urlRecipe}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-blue-600 underline'>
                   Ver Imagen
                 </a>
               </div>

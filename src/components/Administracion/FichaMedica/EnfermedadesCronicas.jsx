@@ -45,40 +45,40 @@ const ChronicDiseaseSection = () => {
 
   return (
     <div>
-      <details className="mb-4 bg-blue-600 text-white p-4 rounded">
-        <summary className="cursor-pointer font-bold ">
+      <details className='mb-4 bg-blue-600 text-white p-4 rounded'>
+        <summary className='cursor-pointer font-bold '>
           Agregar Enfermedad Crónica
         </summary>
-        <div className="mt-4 space-y-3">
+        <div className='mt-4 space-y-3'>
           <CustomInput
-            label="Enfermedad"
-            placeholder="Ej: Diabetes"
+            label='Enfermedad'
+            placeholder='Ej: Diabetes'
             value={newDisease.enfermedad}
             onChange={(e) => handleDiseaseChange("enfermedad", e.target.value)}
           />
           <CustomInput
-            label="Correo del Doctor"
-            placeholder="Ej: doctor@email.com"
+            label='Correo del Doctor'
+            placeholder='Ej: doctor@email.com'
             value={newDisease.doctorEmail}
             onChange={(e) => handleDiseaseChange("doctorEmail", e.target.value)}
           />
           <CustomInput
-            label="Centro Médico"
-            placeholder="Ej: Hospital Central"
+            label='Centro Médico'
+            placeholder='Ej: Hospital Central'
             value={newDisease.centroMedico}
             onChange={(e) =>
               handleDiseaseChange("centroMedico", e.target.value)
             }
           />
           <CustomInput
-            label="Medicamento"
-            placeholder="Ej: Insulina"
+            label='Medicamento'
+            placeholder='Ej: Insulina'
             value={newDisease.medicamento}
             onChange={(e) => handleDiseaseChange("medicamento", e.target.value)}
           />
           <CustomInput
-            label="Dosis"
-            placeholder="Ej: 10mg"
+            label='Dosis'
+            placeholder='Ej: 10mg'
             value={newDisease.dosis}
             onChange={(e) => handleDiseaseChange("dosis", e.target.value)}
           />
@@ -86,52 +86,49 @@ const ChronicDiseaseSection = () => {
           <button
             onClick={handleAddDisease}
             disabled={!isFormComplete}
-            className="py-2 px-4 bg-green-700 w-full text-white rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+            className='py-2 px-4 bg-green-700 w-full text-white rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'>
             Agregar Enfermedad +
           </button>
         </div>
       </details>
 
-      <details className=" p-4 rounded">
-        <summary className="cursor-pointer font-bold text-lg bg-azul text-white p-4 rounded shadow-md">
+      <details className=' p-4 rounded'>
+        <summary className='cursor-pointer font-bold text-lg bg-azul text-white p-4 rounded shadow-md'>
           Enfermedades Crónicas Registradas
         </summary>
         {chronicDiseases.length > 0 ? (
-          <div className="space-y-4">
+          <div className='space-y-4'>
             {chronicDiseases.map((disease, index) => (
               <div
                 key={index}
-                className="bg-white shadow-md border border-gray-200 rounded-lg p-4 flex flex-col gap-2"
-              >
-                <div className="flex justify-between items-center">
-                  <h5 className="font-semibold text-gray-800">
-                    {disease.enfermedad}
+                className='bg-white shadow-md border border-gray-200 rounded-lg p-4 flex flex-col gap-2'>
+                <div className='flex justify-between items-center'>
+                  <h5 className='font-semibold text-gray-800'>
+                    Enfermedad: {disease.enfermedad}
                   </h5>
                   <button
                     onClick={() => removeChronicDisease(index)}
-                    className="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                  >
+                    className='py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600 transition'>
                     Eliminar
                   </button>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className='text-sm text-gray-600'>
                   <strong>Correo del Doctor:</strong> {disease.doctorEmail}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className='text-sm text-gray-600'>
                   <strong>Centro Médico:</strong> {disease.centroMedico}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className='text-sm text-gray-600'>
                   <strong>Medicamento:</strong> {disease.medicamento}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className='text-sm text-gray-600'>
                   <strong>Dosis:</strong> {disease.dosis}
                 </p>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-600">No hay enfermedades registradas.</p>
+          <p className='text-gray-600'>No hay enfermedades registradas.</p>
         )}
       </details>
     </div>

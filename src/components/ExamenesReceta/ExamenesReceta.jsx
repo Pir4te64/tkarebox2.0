@@ -36,11 +36,11 @@ const ExamenesReceta = () => {
   const recipes = data.body;
 
   return (
-    <div className="p-4 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-white text-center">
+    <div className='p-4 min-h-screen overflow-y-auto'>
+      <h1 className='text-3xl font-bold mb-6 text-white text-center'>
         Recetas Médicas
       </h1>
-      <div className="grid grid-cols-1 gap-6">
+      <div className='grid grid-cols-1 gap-3 overflow-y-auto h-[500px] my-3'>
         {recipes.map((recipe) => {
           // Formatear la fecha: la fecha viene como [año, mes, día]
           const [year, month, day] = recipe.date;
@@ -48,24 +48,22 @@ const ExamenesReceta = () => {
           return (
             <div
               key={recipe.id}
-              className="bg-white border-l-4 border-azul shadow-md rounded p-4"
-            >
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Fecha: </span>
-                <span className="text-gray-700">{formattedDate}</span>
+              className='bg-white border-l-4 border-azul shadow-md rounded p-4'>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Fecha: </span>
+                <span className='text-gray-700'>{formattedDate}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-semibold text-azul">Doctor: </span>
-                <span className="text-gray-700">{recipe.doctorName}</span>
+              <div className='mb-2'>
+                <span className='font-semibold text-azul'>Doctor: </span>
+                <span className='text-gray-700'>{recipe.doctorName}</span>
               </div>
               <div>
-                <span className="font-semibold text-azul">Receta: </span>
+                <span className='font-semibold text-azul'>Receta: </span>
                 <a
                   href={recipe.urlRecipe}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-blue-600 underline'>
                   Ver Receta
                 </a>
               </div>
