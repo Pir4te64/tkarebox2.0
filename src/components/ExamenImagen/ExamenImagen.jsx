@@ -8,18 +8,54 @@ const ExamenImagen = () => {
   const { ficha } = location.state || {};
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  // Objeto para almacenar la URL de descarga de cada estudio
+  const [downloadUrls, setDownloadUrls] = useState({});
 
   useEffect(() => {
-    if (!ficha) return; // No se realiza la petición si no se tiene "ficha"
+    if (!ficha) return; // No se realiza la petición sin "ficha"
 
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        // Primera petición: obtener datos del examen
         const response = await axios.get(API.CHATGPT_CONSULTA_IMAGE, {
           params: { userDataId: ficha },
           headers: { Authorization: `Bearer ${token}` },
         });
         setData(response.data);
+
+        // Verificar que hay estudios
+        if (response.data.body && response.data.body.length > 0) {
+          const studies = response.data.body;
+          // Objeto temporal para almacenar cada URL
+          const urls = {};
+          // Realizamos peticiones paralelas para cada estudio usando Promise.all
+          await Promise.all(
+            studies.map(async (study) => {
+              try {
+                const downloadResponse = await axios.post(
+                  API.CHATGPT_CONSULTA_IMAGE_DOWNLOAD,
+                  { fileName: study.studyName },
+                  { headers: { Authorization: `Bearer ${token}` } }
+                );
+
+                // Guardar la URL usando el id del estudio o studyName
+                if (downloadResponse.data && downloadResponse.data.body) {
+                  urls[study.id] = {
+                    url: downloadResponse.data.body,
+                    name: study.studyName,
+                  };
+                }
+              } catch (err) {
+                console.error(
+                  `Error descargando ${study.studyName}:`,
+                  err.message
+                );
+              }
+            })
+          );
+          setDownloadUrls(urls);
+        }
       } catch (err) {
         console.error("Error en la petición:", err);
         setError(err);
@@ -29,10 +65,21 @@ const ExamenImagen = () => {
     fetchData();
   }, [ficha]);
 
+  // Función para descargar el PDF usando la URL y el nombre del estudio
+  const handleDownload = (url, name) => {
+    if (url) {
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${name}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Loading...</div>;
 
-  // Se asume que los datos se encuentran en data.body
   const studies = data.body;
 
   return (
@@ -42,9 +89,11 @@ const ExamenImagen = () => {
       </h1>
       <div className='grid grid-cols-1 gap-6 h-[500px] overflow-y-auto'>
         {studies.map((study) => {
-          // Formatear la fecha: la fecha viene como [año, mes, día]
+          // Formatear la fecha: se recibe como [año, mes, día]
           const [year, month, day] = study.date;
           const formattedDate = `${day}/${month}/${year}`;
+          const downloadData = downloadUrls[study.id];
+
           return (
             <div
               key={study.id}
@@ -78,6 +127,18 @@ const ExamenImagen = () => {
                   className='text-blue-600 underline'>
                   Ver Imagen
                 </a>
+                {/* Botón "Descargar PDF" debajo del enlace "Ver Imagen" */}
+                {downloadData && downloadData.url && (
+                  <div className='mt-2 flex justify-center items-center'>
+                    <button
+                      onClick={() =>
+                        handleDownload(downloadData.url, downloadData.name)
+                      }
+                      className='text-blue-700 px-4 py-2 rounded'>
+                      Descargar PDF
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           );
